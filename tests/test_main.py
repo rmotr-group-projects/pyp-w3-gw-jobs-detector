@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import re
 import os
 import unittest
@@ -64,8 +63,8 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django: 37 (5%)',
         ]
         # Phil:
-        print('test_hacker_news_custom_keywords Output:') #remove
-        print(result.output) #remove
+        #print('test_hacker_news_custom_keywords Output:') #remove
+        #print(result.output) #remove
         for msg in expected:
             self.assertTrue(msg in result.output)
 
