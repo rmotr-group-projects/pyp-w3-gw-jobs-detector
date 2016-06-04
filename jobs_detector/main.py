@@ -1,11 +1,25 @@
 import click
 import requests
 from bs4 import BeautifulSoup
+import collections
 
-from jobs_detector import settings
+from jobs_detector import settings # gets BASE_DIR, BASE_URL
+
+# # settings.py start
+# import os
+
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_URL = 'https://news.ycombinator.com/item?id={}'
+# # settings.py end
+
 
 DEFAULT_KEYWORDS = [
-    # set some default keywords here
+    'Remote',
+    'Postgres',
+    'Python',
+    'Javascript',
+    'React',
+    'Pandas'
 ]
 
 
@@ -24,10 +38,104 @@ def hacker_news(post_id, keywords, combinations):
     This subcommand aims to get jobs statistics by parsing "who is hiring?"
     HackerNews posts based on given set of keywords.
     """
-    # HINT: You will probably want to use the `BeautifulSoup` tool to
-    # parse the HTML content of the website
-    pass
+    #keywords = keywords.encode('UTF-8')
+    keywords = keywords.split(',') # get keywords as a list
+    keywords = [keyword.title() for keyword in keywords]
+    
+    combinations = combinations or []
+    #combinations = [combo.encode('UTF-8').title() for combo in combinations]
+    combinations = [combo.title() for combo in combinations]
+    # Initialize a defaultdict of counts for each of our keywords & combos
+    keyword_counts = collections.defaultdict(int)
+    
+    # Get the html from the page and parse it using BeautifulSoup
+    page = requests.get(settings.BASE_URL.format(post_id))
+    # page = requests.get(BASE_URL.format(post_id))
+    soup = BeautifulSoup(page.text, 'html.parser')
+    
+    # Find each post on the page
+    job_posts = []
+    # Every post on the page is in a <tr> with class "athing".
+    posts = soup.find_all("tr", class_="athing")
+    for post in posts:
+        # Each post has an <img> element to pad it on the left.  For root posts
+        #  (job posts) this element has width 0.  For comments on job posts,
+        #  the width is larger.
+        if post.find("img", width="0"):
+            job_posts.append(post)
+    
+    # Increment dict values for matches in a post
+    for post in job_posts:
+        search_comment(
+            post.get_text(),
+            keyword_counts,
+            keywords,
+            combinations
+        )
+    
+    # Print out counts from dict
+    display_counts(keyword_counts, keywords, combinations, len(job_posts))
+    
+    
+def search_comment(comment, keyword_counts, keywords, combinations):
+    '''
+    Reads in a comment that is type string
+    Searches for all matches to keywords and combinations
+    Modifies keyword_counts to update with each match found
+    comment: string
+    keyword_counts: defaultdict(int) that will be updated
+    keywords: list of kewords
+    combinations: list of combo-keywords ['remote-python-flask', 'remote-django']
+    '''
+    # incase comment is unicode
+    #comment = comment.encode('UTF-8')
+    comment = comment.lower() # compare lowercase everything
+    
+    
+    for keyword in keywords:
 
+        if keyword.lower() in comment:
+            keyword_counts[keyword] += 1
+            
+    for combination in combinations:
+        #combination_string = combination.encode('UTF-8')
+        combo_keywords = combination.lower().split('-')
+        if all(keyword in comment for keyword in combo_keywords):
+            keyword_counts[combination] += 1
+            
+def display_counts(keyword_counts, keywords, combinations, total_posts):
+    '''
+    Prints out info on # of counts for each keyword and percentages of total posts
+    Keywords:
+    Remote: 174 (19%)
+    Postgres: 81 (9%)
+    Python: 144 (16%)
+    Javascript: 118 (13%)
+    React: 133 (14%)
+    Pandas: 5 (0%)
+    
+    Combinations:
+    Remote-Python-Flask: 2 (0%)
+    Remote-Django: 6 (0%)
+    '''
+    print('Total job posts: {}\n'.format(total_posts))
+    display_info('Keywords', keyword_counts, keywords, total_posts)
+    if combinations:
+        print('')
+        display_info('Combinations', keyword_counts, combinations, total_posts)
+        
+def display_info(name, keyword_counts, key_list, total_posts):
+    '''
+    '''
+    if key_list:
+        print('{}:'.format(name))
+        for key in key_list:
+            count = keyword_counts[key]
+            try:
+                percent = int(count / float(total_posts) * 100)
+            except ZeroDivisionError:
+                percent = 0
+            print('{}: {} ({}%)'.format(key, count, percent))
 
 if __name__ == '__main__':
     jobs_detector()
