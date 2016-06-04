@@ -20,3 +20,36 @@ Javascript: 118 (13%)
 React: 133 (14%)
 Pandas: 5 (0%)
 ```
+
+For statistics about a sub set of the default keywords, or even custom keywords out of the default set you can specify the `-k` or `--keywords` options, as a comma separated list of values.
+
+```bash
+$ jobs_detector hacker_news -i 11814828 -k python,django,ruby
+Total job posts: 889
+
+Keywords:
+Python: 144 (16%)
+Ruby: 80 (8%)
+Django: 36 (4%)
+```
+
+It's also possible to request statistics of certain combination of keywords. For example, how many offers are asking for "remote", "python", and "flask" at the same time?. To do that, use the `-c` or `-combinations` option.
+
+```bash
+$ jobs_detector hacker_news -i 11814828 -c remote-python-flask,remote-django
+Total job posts: 888
+
+Keywords:
+Remote: 174 (19%)
+Postgres: 81 (9%)
+Python: 144 (16%)
+Javascript: 118 (13%)
+React: 133 (14%)
+Pandas: 5 (0%)
+
+Combinations:
+Remote-Python-Flask: 2 (0%)
+Remote-Django: 6 (0%)
+```
+
+Feel free to extend the functionality of this command by adding extra parameters or even more subcommands to parse different websites. 
