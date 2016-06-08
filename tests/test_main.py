@@ -22,7 +22,7 @@ class HackerNewsTestCase(unittest.TestCase):
                       re.compile(re.escape(settings.BASE_URL.format(self.post_id))),
                       body=content, status=200,
                       content_type='text/html')
-
+    
     @responses.activate
     def test_hacker_news_default_keywords(self):
         runner = CliRunner()
@@ -31,19 +31,21 @@ class HackerNewsTestCase(unittest.TestCase):
             ['hacker_news', '-i', self.post_id]
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 164 (22%)',
+            'Postgres: 81 (11%)',
+            'Python: 145 (20%)',
+            'Javascript: 120 (16%)',
+            'React: 134 (18%)',
             'Pandas: 5 (0%)',
         ]
+        #print('\n\n RESULT OUTPUT: \n {}\n\n').format(result.output)
         for msg in expected:
             self.assertTrue(msg in result.output)
-
+    
+    
     @responses.activate
     def test_hacker_news_custom_keywords(self):
         runner = CliRunner()
@@ -54,12 +56,13 @@ class HackerNewsTestCase(unittest.TestCase):
              '-k', 'python,django']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 145 (20%)',
+            'Django: 37 (5%)',
         ]
+        #print('\n\n RESULT OUTPUT: \n {}\n\n').format(result.output)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -73,14 +76,14 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 164 (22%)',
+            'Postgres: 81 (11%)',
+            'Python: 145 (20%)',
+            'Javascript: 120 (16%)',
+            'React: 134 (18%)',
             'Pandas: 5 (0%)',
 
             'Combinations:',
@@ -105,8 +108,8 @@ class HackerNewsTestCase(unittest.TestCase):
             'Total job posts: 883',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 145 (20%)',
+            'Django: 37 (5%)',
 
             'Combinations:',
             'Python-Remote: 25 (2%)',

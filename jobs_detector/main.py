@@ -1,13 +1,18 @@
+
 import click
 import requests
 from bs4 import BeautifulSoup
 
 from jobs_detector import settings
 
-DEFAULT_KEYWORDS = [
-    # set some default keywords here
+DEFAULT_KEYWORDS = [ # this is lifted from test_main.py and the readme.
+    'remote',
+    'postgres',
+    'python',
+    'javascript',
+    'react',
+    'pandas'
 ]
-
 
 @click.group()
 def jobs_detector():
@@ -26,7 +31,38 @@ def hacker_news(post_id, keywords, combinations):
     """
     # HINT: You will probably want to use the `BeautifulSoup` tool to
     # parse the HTML content of the website
-    pass
+        
+    keywords = keywords.split(',')        
+    main_page = requests.get(settings.BASE_URL.format(post_id))
+    
+    # turn it into a BS4 object we can parse with html.
+    soupy = BeautifulSoup(main_page.text, 'html.parser')
+    
+    # Find all the TR (table row) classes.  This will be the main thread, and each
+    # followup post/reply.
+    posting = soupy.find_all("tr", class_="athing") 
+    top_posts = [p.get_text() for p in posting if p.find("img", width="0")]
+    postcount = len(top_posts)
+
+    #print('Post Comprehension posting count is: {}'.format(postcount))
+    keyword_dict = dict.fromkeys(keywords, 0)
+    
+    # Parse each line, loading dict as keywords are found.
+    for line in top_posts:
+        for keyword in keyword_dict.keys():
+            if keyword.lower() in line.lower():
+                keyword_dict[keyword] += 1
+
+    # TODO: need to import some itertools.combinations magic to ensure 
+    # the combinations portion of this also works.
+
+    #print('Total job posts: {}\n\nKeywords:'.format(postcount))
+    #for keyword, count in keyword_dict.items():
+    #    print('{}: {} ({}%))'.format(keyword.title(), count, int(((float(count)/postcount) * 100))))
+    
+    print('Total job posts: {}\n\nKeywords:').format(postcount)
+    for keyword, count in keyword_dict.items():
+        print('{}: {} ({}%)').format(keyword.title(), count, int(((float(count)/postcount) * 100)))
 
 
 if __name__ == '__main__':
