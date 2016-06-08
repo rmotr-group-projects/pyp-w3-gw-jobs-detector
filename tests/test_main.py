@@ -31,18 +31,20 @@ class HackerNewsTestCase(unittest.TestCase):
             ['hacker_news', '-i', self.post_id]
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 761',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
-            'Pandas: 5 (0%)',
+            'Remote: 171 (22%)',
+            'Postgres: 84 (11%)',
+            'Python: 155 (20%)',
+            'Javascript: 124 (16%)',
+            'React: 141 (19%)',
+            'Pandas: 6 (1%)',
         ]
+        self.assertIsNone(result.exception, result.exception)
+        
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            self.assertTrue(msg in result.output, result.output)
 
     @responses.activate
     def test_hacker_news_custom_keywords(self):
@@ -54,14 +56,15 @@ class HackerNewsTestCase(unittest.TestCase):
              '-k', 'python,django']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 761',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 155 (20%)',
+            'Django: 39 (5%)',
         ]
+
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            self.assertTrue(msg in result.output, result.output)
 
     @responses.activate
     def test_hacker_news_combinations(self):
@@ -73,23 +76,24 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 761',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
-            'Pandas: 5 (0%)',
+            'Remote: 171 (22%)',
+            'Postgres: 84 (11%)',
+            'Python: 155 (20%)',
+            'Javascript: 124 (16%)',
+            'React: 141 (19%)',
+            'Pandas: 6 (1%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
-            'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'Python-remote: 29 (4%)',
+            'Django-remote: 8 (1%)',
+            'Python-django: 38 (5%)',
         ]
+    
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            self.assertTrue(msg in result.output, result.output)
 
     @responses.activate
     def test_hacker_news_keywords_and_combinations(self):
@@ -102,16 +106,16 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 761',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 155 (20%)',
+            'Django: 39 (5%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
-            'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'Python-remote: 29 (4%)',
+            'Django-remote: 8 (1%)',
+            'Python-django: 38 (5%)',
         ]
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            self.assertTrue(msg in result.output, result.output)
