@@ -31,38 +31,66 @@ def hacker_news(post_id, keywords, combinations):
     """
     # HINT: You will probably want to use the `BeautifulSoup` tool to
     # parse the HTML content of the website
-        
-    keywords = keywords.split(',')        
+
+    keywords = keywords.split(',')
+    combinations = combinations or [] # set this first so next line can iterate
+    combinations = [combinations.title() for combination in combinations]
     main_page = requests.get(settings.BASE_URL.format(post_id))
-    
+
     # turn it into a BS4 object we can parse with html.
     soupy = BeautifulSoup(main_page.text, 'html.parser')
-    
+
     # Find all the TR (table row) classes.  This will be the main thread, and each
     # followup post/reply.
-    posting = soupy.find_all("tr", class_="athing") 
+    posting = soupy.find_all("tr", class_="athing")
     top_posts = [p.get_text() for p in posting if p.find("img", width="0")]
     postcount = len(top_posts)
 
     #print('Post Comprehension posting count is: {}'.format(postcount))
     keyword_dict = dict.fromkeys(keywords, 0)
-    
+
     # Parse each line, loading dict as keywords are found.
     for line in top_posts:
         for keyword in keyword_dict.keys():
             if keyword.lower() in line.lower():
                 keyword_dict[keyword] += 1
 
-    # TODO: need to import some itertools.combinations magic to ensure 
-    # the combinations portion of this also works.
+    for combination in combinations:
+        for keyword in combinations.split('-'):
+            if all(keyword in top_posts):
+                keyword_dict[combination] += 1 # not sure if this is right
 
-    #print('Total job posts: {}\n\nKeywords:'.format(postcount))
-    #for keyword, count in keyword_dict.items():
-    #    print('{}: {} ({}%))'.format(keyword.title(), count, int(((float(count)/postcount) * 100))))
-    
     print('Total job posts: {}\n\nKeywords:').format(postcount)
     for keyword, count in keyword_dict.items():
         print('{}: {} ({}%)').format(keyword.title(), count, int(((float(count)/postcount) * 100)))
+
+    if combinations:
+        print('\n\nCombinations:')
+        for combination, count in keyword_dict.items():
+            print('{}: {} ({}%)').format(combination.title(), count, int(((float(count)/postcount) * 100)))
+
+    # TODO: need to import some itertools.combinations magic to ensure
+    # the combinations portion of this also works.
+
+    # make the combinations.  (itertools.combinations?)
+    # all(stuff) is a good way to check if evertything is there.
+    # all(keyword in post for keyword in combos)
+
+    # make a new combos dict out of the final combo list.
+    # then iter, like line 51-ish, but checking the combos instead of just keywords.
+
+    '''
+    'Total job posts: 883',
+
+            'Keywords:',
+            'Python: 145 (20%)',
+            'Django: 37 (5%)',
+
+            'Combinations:',
+            'Python-Remote: 25 (2%)',
+            'Django-Remote: 6 (0%)',
+            'Python-Django: 35 (3%)',
+    '''
 
 
 if __name__ == '__main__':
