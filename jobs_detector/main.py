@@ -26,8 +26,18 @@ def hacker_news(post_id, keywords, combinations):
     """
     # HINT: You will probably want to use the `BeautifulSoup` tool to
     # parse the HTML content of the website
-    pass
+    soup = BeautifulSoup(html_doc, 'html.parser')
 
 
 if __name__ == '__main__':
     jobs_detector()
+
+
+
+
+#   PLAN OF ATTACK
+#   1. Create web crawler
+#       a. Get all HTML data
+#       b. Parse HTML data into Python format (dict)
+#   2. Create func to print Python dict into human readable form
+#   3. Turn func into command line tool
