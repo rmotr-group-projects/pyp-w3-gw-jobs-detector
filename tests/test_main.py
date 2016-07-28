@@ -7,7 +7,7 @@ import responses
 from click.testing import CliRunner
 
 from jobs_detector import settings
-from jobs_detector.main import jobs_detector, helper
+from jobs_detector.main import jobs_detector
 
 
 class HackerNewsTestCase(unittest.TestCase):
@@ -22,11 +22,6 @@ class HackerNewsTestCase(unittest.TestCase):
                       re.compile(re.escape(settings.BASE_URL.format(self.post_id))),
                       body=content, status=200,
                       content_type='text/html')
-    
-    #Test Ivan added in to help test with ipdb, use this test rather than test below                  
-    @responses.activate
-    def test_helper_function(self):
-        helper("11814828", keywords = ['python', 'django'], combinations = ['python-remote','django-remote'])
 
     @responses.activate
     def test_hacker_news_default_keywords(self):
@@ -37,7 +32,7 @@ class HackerNewsTestCase(unittest.TestCase):
         )
         expected = [
             'Total job posts: 883',
-            
+
             'Keywords:',
             'Remote: 174 (19%)',
             'Postgres: 81 (9%)',
@@ -62,10 +57,11 @@ class HackerNewsTestCase(unittest.TestCase):
             'Total job posts: 883',
 
             'Keywords:',
-            'Python: 143 (16%)',
+            'Python: 143 (21%)', #was 16%
             'Django: 36 (4%)',
         ]
         for msg in expected:
+            import ipdb; ipdb.set_trace()
             self.assertTrue(msg in result.output)
 
     @responses.activate

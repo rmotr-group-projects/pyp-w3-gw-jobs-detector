@@ -117,7 +117,7 @@ def hacker_news(post_id, keywords, combinations):
     total_job_post_count = len(comments)
     
     #add next to the main body of fcn
-    total_job_post_count_string =  "Total job posts: {}".format(total_job_post_count)
+    total_job_post_count_string =  "  Total job posts: {} ".format(total_job_post_count)
     
     only_text = soup.get_text()
     only_text = only_text.lower()
@@ -140,10 +140,10 @@ def hacker_news(post_id, keywords, combinations):
         
             #return keyword_counts    
             
-    keyword_output =  "Keywords: \n"
+    keyword_output =  " Keywords: \n"
     for keyword in keyword_counts:
         keyword_output = keyword_output + \
-        "{}: {} ({}%) \n".format(keyword.capitalize(), keyword_counts[keyword][0], keyword_counts[keyword][1])
+        " {}: {} ({}%) \n ".format(keyword.capitalize(), keyword_counts[keyword][0], keyword_counts[keyword][1])
         
     
     click.echo(total_job_post_count_string)
