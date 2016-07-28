@@ -144,8 +144,8 @@ def hacker_news(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
                 click.echo(type(comment))
                 click.echo(comment)
                 click.echo(str(combination_keywords[1]) in comment)
-                if keyword not in comment:
-                    click.echo("I hate my life")
+                if str(keyword) not in comment:
+                    click.echo("I hate my life") #Jason Meeks "its becus its unicorn"
                 # if keyword not in format_comment:
                 #     # flag = False
                 #     click.echo(keyword)
