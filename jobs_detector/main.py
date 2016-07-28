@@ -25,7 +25,7 @@ def request_page(post_id):
     return requests.get(url)
     
     
-def keywords_count_and_stats(keywords, only_text, total_job_post_count):
+def keywords_count_and_stats(keywords, comments, total_job_post_count):
     keyword_counts = {}
     keywords = keywords.split(',')
     
@@ -33,20 +33,29 @@ def keywords_count_and_stats(keywords, only_text, total_job_post_count):
                             #therefore, the datastruct looks like keyword_counts[keyword] = [count, stat]
         keyword = keyword.lower()
         keyword_counts[keyword] = [0, 0]
+    
         
-    if keywords is not None:
-        #==========================
-        for keyword in keyword_counts: #iterate through keys
-            keyword_counts[keyword][0] = only_text.count(keyword)
-            
-            temp = keyword_counts[keyword][0] / float(total_job_post_count) * 100
-            keyword_counts[keyword][1] = int(temp)
+    for comment in comments:
+        comment = str(comment).lower()
+        for keyword in keyword_counts.keys():
+            if str(keyword) in comment:
+                keyword_counts[keyword][0] += 1
+    
+    for keyword in keyword_counts.keys():
+        stat = keyword_counts[keyword][0]/float(total_job_post_count) * 100
+        keyword_counts[keyword][1] = int(stat)
+    # #==========================
+    # for keyword in keyword_counts: #iterate through keys
+    #     keyword_counts[keyword][0] = only_text.count(keyword)
         
+    #     temp = keyword_counts[keyword][0] / float(total_job_post_count) * 100
+    #     keyword_counts[keyword][1] = int(temp)
+    
             
     keyword_output =  "Keywords:\n"
     for keyword in keyword_counts:
         keyword_output = keyword_output + \
-        "{}: {} ({}%) \n ".format(keyword.capitalize(), keyword_counts[keyword][0], keyword_counts[keyword][1])
+        "{}: {} ({}%)\n ".format(keyword.capitalize(), keyword_counts[keyword][0], keyword_counts[keyword][1])
     
     return keyword_output
 
@@ -111,7 +120,7 @@ def hacker_news(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
     only_text = soup.get_text()
     only_text = only_text.lower()
     
-    keyword_output = keywords_count_and_stats(keywords, only_text, total_job_post_count)
+    keyword_output = keywords_count_and_stats(keywords, comments, total_job_post_count)
     click.echo(keyword_output)
     # combination_dict = combination_count_and_stats(combinations, comments, total_job_post_count)
     # combination_output = "Combinations:"
@@ -122,7 +131,7 @@ def hacker_news(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
     #'-c', 'python-remote,python-django,django-remote']
     #'python-remote', 'python-django', 'django-remote'
     combination_dict = {}
-
+#python-remote, python-django, django-remote
     for combination in combinations: #initializing combination_dict with 0 for each keyword, and 0 for stats 
                                     #therefore, the datastruct looks like combination_dict[combination] = [count, stat]
         combination = combination.lower()
@@ -142,19 +151,18 @@ def hacker_news(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
             else:
                 combination_dict[combination_keywords][0] += 1
 
-
-    
     for key in combination_dict:
         temp = combination_dict[key][0] / float(total_job_post_count) * 100
         combination_dict[key][1] = int(temp)
 
-    combination_output = "Combinations:\n"
-    for combination in combinations:
-
+    combination_output = "Combinations:\n" #happy birthday Adrian!!!
+    for key_tuple in (combination_dict):
+        
+        formatted_string = '-'.join(key_tuple).title()
+        
         combination_output = combination_output + \
-        "{}: {} ({})%\n".format(combination, combination_dict[keyword_list_tuple][0], combination_dict[keyword_list_tuple][1])
+        "{}: {} ({}%)\n".format(formatted_string, combination_dict[key_tuple][0], combination_dict[key_tuple][1])
     click.echo(combination_output)
-    
     
     
 if __name__ == '__main__':

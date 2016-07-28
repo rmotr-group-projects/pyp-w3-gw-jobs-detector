@@ -44,6 +44,7 @@ class HackerNewsTestCase(unittest.TestCase):
             'Pandas: 5 (0%)',
         ]
         for msg in expected:
+            #import ipdb; ipdb.set_trace()
             
             self.assertTrue(msg in result.output)
 
@@ -59,11 +60,10 @@ class HackerNewsTestCase(unittest.TestCase):
         expected = [
             'Total job posts: 883',
             'Keywords:',
-            'Python: 186 (21%)', #was 186, 16%
-            'Django: 44 (4%)', #was 44, 4%
+            'Python: 143 (16%)', #was 186, 16%
+            'Django: 36 (4%)', #was 44, 4%
         ]
         for msg in expected:
-            # import ipdb; ipdb.set_trace()
             self.assertTrue(msg in result.output)
         # self.assertTrue(expected[0] in result.output)
     @responses.activate
@@ -92,7 +92,7 @@ class HackerNewsTestCase(unittest.TestCase):
             'Python-Django: 35 (3%)',
         ]
         for msg in expected:
-            import ipdb; ipdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             self.assertTrue(msg in result.output)
 
     @responses.activate
