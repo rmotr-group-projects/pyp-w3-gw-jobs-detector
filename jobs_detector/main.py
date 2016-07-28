@@ -130,53 +130,27 @@ def hacker_news(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
         keyword_list_tuple = tuple(keyword_list)
         combination_dict[keyword_list_tuple] = [0,0] 
     #25 for python-remote, 6 for django
-    click.echo(combination_dict.keys())
     for comment in comments:
         comment = str(comment).lower()
         #(u'django', u'remote') 
         #import ipdb; ipdb.set_trace()
         for combination_keywords in combination_dict.keys(): #iterate through dictionary
-            click.echo(combination_keywords[0])#django
-            click.echo(combination_keywords[1])#remote
             # flag = True
             for keyword in combination_keywords:
-                click.echo(keyword)
-                click.echo(type(comment))
-                click.echo(comment)
-                click.echo(str(combination_keywords[1]) in comment)
                 if str(keyword) not in comment:
-                    click.echo("I hate my life") #Jason Meeks "its becus its unicorn"
-                # if keyword not in format_comment:
-                #     # flag = False
-                #     click.echo(keyword)
-                #     break
+                    break
             else:
-            # if flag == True:
                 combination_dict[combination_keywords][0] += 1
-                click.echo(combination_dict[combination_keywords][0])
 
 
-    click.echo(combination_dict)
+    
     for key in combination_dict:
         temp = combination_dict[key][0] / float(total_job_post_count) * 100
         combination_dict[key][1] = int(temp)
 
-    combination_output = "Combinations:"
-    click.echo(combination_output)
-    
-    for combination in combination_list:
-        
-        combination = combination.lower()
-        keyword_list = combination.split('-')
-        keyword_list_tuple = tuple(keyword_list)
-        
-        capitalized_keywords = [key.capitalize() for key in keyword_list]
-        temp = ""
-        for index, keyword in enumerate(capitalized_keywords):
-            if index is len(capitalized_keywords) -1:
-                temp = temp + keyword
-                break
-            temp = temp + keyword + "-"
+    combination_output = "Combinations:\n"
+    for combination in combinations:
+
         combination_output = combination_output + \
         "{}: {} ({})%\n".format(combination, combination_dict[keyword_list_tuple][0], combination_dict[keyword_list_tuple][1])
     click.echo(combination_output)
