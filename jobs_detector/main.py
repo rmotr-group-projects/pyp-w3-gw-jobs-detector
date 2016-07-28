@@ -4,7 +4,9 @@ from bs4 import BeautifulSoup
 
 from settings import BASE_URL
 
-
+#link to package on pypi: 
+#SOOOO BEAUTIFUL
+#https://pypi.python.org/pypi/rmotr-b7-c1-g1-jobs-detectorr/0.0.3
 DEFAULT_KEYWORDS = [
     'Remote',
     'Postgres',
