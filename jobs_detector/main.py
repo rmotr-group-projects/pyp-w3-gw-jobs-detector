@@ -40,14 +40,7 @@ def hacker_news(post_id, keywords, combinations):
     if combinations:
         _caluculate_combinations_statistics(jobListings, combinations)
         _echo_comb_results(num_of_job_listings, combinations)
-    # elif keywords:
-    #     _calculate_keyword_statistics(jobListings, keywords)
-    #     _echo_keyword_results(num_of_job_listings, keywords)
-    # else:
-    #     _calculate_keyword_statistics(jobListings, keywords)
-    #     _echo_keyword_results(num_of_job_listings, keywords)
-        
-        
+
 def _request_page(post_id):
     """
     Makes a get request to ycombinator's job listings thread and returns a 
