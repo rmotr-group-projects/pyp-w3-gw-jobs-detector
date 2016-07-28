@@ -34,6 +34,10 @@ setup(
     tests_require=[
         'pytest==2.9.1'
     ],
+    install_requires=[
+        'responses',
+        'click'
+        ],
     entry_points={
         'console_scripts':['jobs_detector=jobs_detector.main:jobs_detector']
     },
