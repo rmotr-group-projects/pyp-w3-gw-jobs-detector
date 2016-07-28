@@ -52,7 +52,7 @@ def keywords_count_and_stats(keywords, comments, total_job_post_count):
     #     keyword_counts[keyword][1] = int(temp)
     
             
-    keyword_output =  "Keywords:\n"
+    keyword_output =  "Keywords:"
     for keyword in keyword_counts:
         keyword_output = keyword_output + \
         "{}: {} ({}%)\n ".format(keyword.capitalize(), keyword_counts[keyword][0], keyword_counts[keyword][1])
@@ -110,7 +110,7 @@ def hacker_news(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
 
     comments = soup.find_all('span', class_='c00')
     total_job_post_count = len(comments)
-    total_job_post_count_output =  "Total job posts: {}".format(total_job_post_count)
+    total_job_post_count_output =  "\n Total job posts: {} \n".format(total_job_post_count)
     click.echo(total_job_post_count_output)
     
     only_text = soup.get_text()
@@ -118,9 +118,11 @@ def hacker_news(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
     
     keyword_output = keywords_count_and_stats(keywords, comments, total_job_post_count)
     click.echo(keyword_output)
+    click.echo('\n')
     
-    combination_output = combination_count_and_stats(combinations, comments, total_job_post_count)
-    click.echo(combination_output)
+    if combinations != None:
+        combination_output = combination_count_and_stats(combinations, comments, total_job_post_count)
+        click.echo(combination_output)
     
     
 if __name__ == '__main__':

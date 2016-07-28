@@ -24,7 +24,7 @@ class PyTest(TestCommand):
 
 setup(
     name='rmotr-b7-c1-g1-jobs-detectorr',
-    version='0.0.1',
+    version='0.0.3',
     description="rmotr.com Group Project | Jobs Detector",
     author='Jessica Ngo',
     author_email='jessica.ngo@live.com',
