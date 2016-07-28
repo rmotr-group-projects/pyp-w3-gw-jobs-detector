@@ -9,6 +9,8 @@ from click.testing import CliRunner
 from jobs_detector import settings
 from jobs_detector.main import jobs_detector
 
+import warnings
+warnings.filterwarnings("ignore")
 
 class HackerNewsTestCase(unittest.TestCase):
 
@@ -42,6 +44,7 @@ class HackerNewsTestCase(unittest.TestCase):
             'Pandas: 5 (0%)',
         ]
         for msg in expected:
+            import ipdb; ipdb.set_trace()
             self.assertTrue(msg in result.output)
 
     @responses.activate
@@ -57,13 +60,12 @@ class HackerNewsTestCase(unittest.TestCase):
             'Total job posts: 883',
 
             'Keywords:',
-            'Python: 143 (21%)', #was 16%
-            'Django: 36 (4%)',
+            'Python: 186 (21%)', #was 186, 16%
+            'Django: 44 (4%)', #was 44, 4%
         ]
         for msg in expected:
-            import ipdb; ipdb.set_trace()
             self.assertTrue(msg in result.output)
-
+        # self.assertTrue(expected[0] in result.output)
     @responses.activate
     def test_hacker_news_combinations(self):
         runner = CliRunner()
@@ -90,6 +92,7 @@ class HackerNewsTestCase(unittest.TestCase):
             'Python-Django: 35 (3%)',
         ]
         for msg in expected:
+            # import ipdb; ipdb.set_trace()
             self.assertTrue(msg in result.output)
 
     @responses.activate

@@ -19,75 +19,6 @@ DEFAULT_KEYWORDS = [
 def jobs_detector():
     pass
 
-
-#expect keywords to be a list, expect combinations to be a list of string combinations
-# def helper(post_id, keywords=None, combinations=None):
-#     url = BASE_URL.format(post_id)
-#     response = requests.get(url)
-#     soup = BeautifulSoup(response.content, "html.parser")
-    
-    
-#     comments = soup.find_all('span', class_='c00')
-    
-#     total_job_post_count = len(comments)
-    
-#     #add next to the main body of fcn
-#     total_job_post_count_string =  "Total job posts: {}".format(total_job_post_count)
-#     only_text = soup.get_text()
-#     only_text = only_text.lower()
-    
-#     keyword_counts = {}
-    
-#     for keyword in keywords: #initializing keyword_counts dict with 0 for each keyword, and 0 for stats 
-#                             #therefore, the datastruct looks like keyword_counts[keyword] = [count, stat]
-#         keyword = keyword.lower()
-#         keyword_counts[keyword] = [0, 0]
-        
-#     if keywords is not None:
-        
-#         for keyword in keyword_counts: #iterate through keys
-#             keyword_counts[keyword][0] = only_text.count(keyword)
-            
-#             temp = keyword_counts[keyword][0] / float(total_job_post_count) * 100
-#             keyword_counts[keyword][1] = int(temp)
-        
-#             #return keyword_counts    
-            
-#     if combinations is not None:
-#     #combinations looks like remote-python-flask or remote-django
-#     #combinations is a list of string of above ^ 
-#     #'-c', 'python-remote,python-django,django-remote']
-#     #'python-remote', 'python-django', 'django-remote'
-#         combination_dict = {}
-    
-#         for combination in combinations: #initializing combination_dict with 0 for each keyword, and 0 for stats 
-#                                         #therefore, the datastruct looks like combination_dict[combination] = [count, stat]
-#             combination = combination.lower()
-#             keyword_list = combination.split('-')
-#             keyword_list_tuple = tuple(keyword_list)
-#             combination_dict[keyword_list_tuple] = [0,0] 
-#         #25 for python-remote, 6 for django
-#         for comment in comments:
-#             comment = str(comment).lower()
-#             for keyword_list in combination_dict: #iterate through dictionary
-#                 flag = True
-#                 for keyword in keyword_list:
-#                     if keyword not in comment:
-#                         flag = False
-#                         break
-#                 flag2 = True
-#                 if flag == True:
-#                     combination_dict[keyword_list][0] += 1
-#                     flag2 = True
-#                 continue
-#         for combination in combination_dict:
-#             temp = combination_dict[combination][0] / float(total_job_post_count) * 100
-#             combination_dict[combination][1] = int(temp)
-        
-#     import ipdb; ipdb.set_trace()
-
-# PYTHONPATH=. py.test -s tests/test_main.py::HackerNewsTestCase::test_helper_function
-
 @jobs_detector.command()
 @click.option('-i', '--post-id', type=str, required=True)
 @click.option('-k', '--keywords', type=str, default=','.join(DEFAULT_KEYWORDS))
@@ -117,7 +48,7 @@ def hacker_news(post_id, keywords, combinations):
     total_job_post_count = len(comments)
     
     #add next to the main body of fcn
-    total_job_post_count_string =  "  Total job posts: {} ".format(total_job_post_count)
+    total_job_post_count_string =  "Total job posts: {}".format(total_job_post_count)
     
     only_text = soup.get_text()
     only_text = only_text.lower()
@@ -132,6 +63,8 @@ def hacker_news(post_id, keywords, combinations):
         
     if keywords is not None:
         
+        
+        #==========================
         for keyword in keyword_counts: #iterate through keys
             keyword_counts[keyword][0] = only_text.count(keyword)
             
@@ -140,10 +73,10 @@ def hacker_news(post_id, keywords, combinations):
         
             #return keyword_counts    
             
-    keyword_output =  " Keywords: \n"
+    keyword_output =  "Keywords:\n"
     for keyword in keyword_counts:
         keyword_output = keyword_output + \
-        " {}: {} ({}%) \n ".format(keyword.capitalize(), keyword_counts[keyword][0], keyword_counts[keyword][1])
+        "{}: {} ({}%) \n ".format(keyword.capitalize(), keyword_counts[keyword][0], keyword_counts[keyword][1])
         
     
     click.echo(total_job_post_count_string)
@@ -193,7 +126,7 @@ def hacker_news(post_id, keywords, combinations):
                     break
                 temp = temp + keyword + "-"
             combination_output = combination_output + \
-            "{}: {} ({})% \n".format(combination, combination_dict[combination][0], combination_dict[combination][1])
+            "{}: {} ({})%\n".format(combination, combination_dict[combination][0], combination_dict[combination][1])
             
         click.echo(combination_output)
 
@@ -201,19 +134,6 @@ def hacker_news(post_id, keywords, combinations):
     
 if __name__ == '__main__':
     jobs_detector()    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
