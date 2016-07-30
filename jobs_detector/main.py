@@ -13,6 +13,26 @@ DEFAULT_KEYWORDS = [
     "Pandas",
 ]
 
+
+def pull_load(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    posts = soup.find_all('tr', class_='athing') # for the fixtures file
+    posts = [post.get_text().upper() for post in posts if re.search('<img.*width="0".*/>', str(post))]
+    total = len(posts)
+    return posts, total 
+
+
+def output(counters, keywords, total_posts, combinations):
+    click.echo('Total job posts: {}'.format(total_posts))
+    click.echo('Keywords:')
+    for keyword in keywords:
+        click.echo('{}: {} ({}%)'.format(keyword.title(), counters[keyword], int((float(counters[keyword])/float(total_posts))*100)))
+    if combinations:
+        click.echo('Combinations:')
+        for combo in combinations:
+            click.echo('{}: {} ({}%)'.format(combo.title(), counters[combo], int((float(counters[combo])/float(total_posts))*100)))
+
 @click.group()
 def jobs_detector():
     """
@@ -31,7 +51,7 @@ def jobs_detector():
 @click.option('-c', '--combinations', type=str,
               callback=lambda _, x: x.split(',') if x else x,
               help='Optional command:  Specify groups of Custom Keywords to parse together.  Delimit keywords using a hyphen \'-\'.')
-              
+
 def hacker_news(post_id, keywords, combinations):
     """
     This subcommand aims to get jobs statistics by parsing "who is hiring?"
@@ -40,37 +60,23 @@ def hacker_news(post_id, keywords, combinations):
     # fix keywords list
     keywords = list(keywords.split(','))
 
-    # --- initialize counter dict for each keyword
+    # --- get the amount and content of top level comments
+    url = BASE_URL.format(post_id)
+    posts, total = pull_load(url)
     counters = {keyword: 0 for keyword in keywords}
     if combinations:
-        for combo in combinations:
-            counters[combo] = 0
-    
-    # --- pull the html and load the soup
-    response = requests.get(BASE_URL.format(post_id))
-    soup = BeautifulSoup(response.content, "html.parser")
-    # posts = soup.find_all('tr', class_='athing comtr ') # old version for the real website
-    posts = soup.find_all('tr', class_='athing') # for the fixtures file
-    posts_top_level = [post for post in posts if re.search('<img.*width="0".*/>', str(post))]
-    total_posts = len(posts_top_level)
-    
+        counters.update({combo: 0 for combo in combinations}) 
+     
     # --- iterate over each top-level post and search for each keyword, adding to the count dictionary if found.
-    for post in posts_top_level:
+    for post in posts:
         for keyword in keywords:
-            counters[keyword] += keyword.upper() in post.get_text().upper()
+            counters[keyword] += keyword.upper() in post
         if combinations:
             for combo in combinations:
-                counters[combo] += (combo.split('-')[0].upper() in post.get_text().upper()
-                                and combo.split('-')[1].upper() in post.get_text().upper())
-    
-    click.echo('Total job posts: {}\n'.format(total_posts))
-    click.echo('Keywords:')
-    for keyword in keywords:
-        click.echo('{}: {} ({}%)'.format(keyword.title(), counters[keyword], int((float(counters[keyword])/float(total_posts))*100)))
-    if combinations:
-        click.echo('Combinations:')
-        for combo in combinations:
-            click.echo('{}: {} ({}%)'.format(combo.title(), counters[combo], int((float(counters[combo])/float(total_posts))*100)))
-    
+                counters[combo] += all(c.upper() in post for c in combo.split('-'))
+
+    output(counters, keywords, total, combinations)
+
+
 if __name__ == '__main__':
     jobs_detector()
