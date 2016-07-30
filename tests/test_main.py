@@ -35,11 +35,11 @@ class HackerNewsTestCase(unittest.TestCase):
             'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 153 (21%)',
+            'Remote: 164 (22%)',
             'Postgres: 81 (11%)',
-            'Python: 143 (19%)',
-            'Javascript: 117 (16%)',
-            'React: 131 (18%)',
+            'Python: 145 (20%)',
+            'Javascript: 120 (16%)',
+            'React: 134 (18%)',
             'Pandas: 5 (0%)',
         ]
         if result.exception:
@@ -63,8 +63,8 @@ class HackerNewsTestCase(unittest.TestCase):
             'Total job posts: 719',
 
             'Keywords:',
-            'Python: 143 (19%)',
-            'Django: 36 (5%)',
+            'Python: 145 (20%)',
+            'Django: 37 (5%)',
         ]
         if result.exception:
             import traceback
@@ -87,17 +87,17 @@ class HackerNewsTestCase(unittest.TestCase):
             'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 153 (21%)',
+            'Remote: 164 (22%)',
             'Postgres: 81 (11%)',
-            'Python: 143 (19%)',
-            'Javascript: 117 (16%)',
-            'React: 131 (18%)',
+            'Python: 145 (20%)',
+            'Javascript: 120 (16%)',
+            'React: 134 (18%)',
             'Pandas: 5 (0%)',
 
             'Combinations:',
-            'Python-Remote: 25 (3%)',
-            'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (4%)',
+            'Python-Remote: 27 (3%)',
+            'Django-Remote: 7 (0%)',
+            'Python-Django: 36 (5%)',
         ]
         if result.exception:
             import traceback
@@ -121,13 +121,13 @@ class HackerNewsTestCase(unittest.TestCase):
             'Total job posts: 719',
 
             'Keywords:',
-            'Python: 143 (19%)',
-            'Django: 36 (5%)',
+            'Python: 145 (20%)',
+            'Django: 37 (5%)',
 
             'Combinations:',
-            'Python-Remote: 25 (3%)',
-            'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (4%)',
+            'Python-Remote: 27 (3%)',
+            'Django-Remote: 7 (0%)',
+            'Python-Django: 36 (5%)',
         ]
         if result.exception:
             import traceback

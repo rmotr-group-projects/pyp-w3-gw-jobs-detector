@@ -36,23 +36,23 @@ def hacker_news(post_id, keywords, combinations):
 
     html = requests.get('https://news.ycombinator.com/item?id=' + post_id)
     soup = BeautifulSoup(html.text, 'html.parser')
-    comments = soup.find_all('td', class_="ind")
-    for comment in comments:
+    ind_elements = soup.find_all('td', class_="ind")
+    for ind_elem in ind_elements:
         
-        width = comment.findChildren()[0].attrs['width']
+        width = ind_elem.findChildren()[0].attrs['width']
         if width == '0':
             
             jobpostings += 1
             
-            content = comment.findNextSiblings()[1].find('span', class_='c00')
-            content = unicode(content).lower()
-            
+            post_elem = ind_elem.findNextSiblings()[1].find('span', class_='comment')
+            post_content = post_elem.get_text().lower()
+                
             for keyword in keywordsDict:
-                if keyword in content:
+                if keyword in post_content:
                     keywordsDict[keyword] += 1
                     
             for combination in combinationsDict:
-                if all(cKeyword in content for cKeyword in combination):
+                if all(cKeyword in post_content for cKeyword in combination):
                     combinationsDict[combination] += 1
             
     click.echo(generate_result(jobpostings, keywordsDict, combinationsDict))
