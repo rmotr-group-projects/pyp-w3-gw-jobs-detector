@@ -85,7 +85,7 @@ def generate_result(jobpostings, keywordsDict, combinationsDict):
             name = keyword.title()
             number = keywordsDict[keyword]
             percentage = 100*number/jobpostings
-            results.append('{}: {} ({}%)'.format(name ,number, percentage))
+            results.append('{}: {} ({}%)'.format(name ,number, int(percentage)))
             
     if len(combinationsDict) > 0:
         results.append('Combinations:')
@@ -93,7 +93,7 @@ def generate_result(jobpostings, keywordsDict, combinationsDict):
             name = '-'.join(combination).title()
             number = combinationsDict[combination]
             percentage = 100*number/jobpostings
-            results.append('{}: {} ({}%)'.format(name ,number, percentage))
+            results.append('{}: {} ({}%)'.format(name ,number, int(percentage)))
             
     return results
    
