@@ -30,6 +30,7 @@ class HackerNewsTestCase(unittest.TestCase):
             jobs_detector,
             ['hacker_news', '-i', self.post_id]
         )
+        print("Test default keywords\n{}".format(result.output))
         expected = [
             'Total job posts: 883',
 
@@ -53,6 +54,7 @@ class HackerNewsTestCase(unittest.TestCase):
              '-i', self.post_id,
              '-k', 'python,django']
         )
+        print("Test New Custom Keywords:\n{}".format(result.output))
         expected = [
             'Total job posts: 883',
 
@@ -72,6 +74,7 @@ class HackerNewsTestCase(unittest.TestCase):
              '-i', self.post_id,
              '-c', 'python-remote,python-django,django-remote']
         )
+        print('test_hacker_news_combinations:\n{}'.format(result.output))
         expected = [
             'Total job posts: 883',
 
@@ -101,6 +104,7 @@ class HackerNewsTestCase(unittest.TestCase):
              '-k', 'python,django',
              '-c', 'python-remote,python-django,django-remote']
         )
+        print('test_hacker_news_keywords_and_combinations:\n{}'.format(result.output))
         expected = [
             'Total job posts: 883',
 
