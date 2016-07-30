@@ -5,10 +5,7 @@ from bs4 import BeautifulSoup
 from jobs_detector import settings
 
 DEFAULT_KEYWORDS = [
-    # set some default keywords here
-    'Remote', 'Postgres','Python','Javascript','React','Pandas','Django',
-    # 'REMOTE', 'POSTGRES','PYTHON','JAVASCRIPT','REACT','PANDAS','DJANGO'
-    
+    'Remote', 'Postgres','Python','Javascript','React','Pandas'
 ]
 
 
@@ -27,50 +24,79 @@ def hacker_news(post_id, keywords, combinations):
     This subcommand aims to get jobs statistics by parsing "who is hiring?"
     HackerNews posts based on given set of keywords.
     """
-    # HINT: You will probably want to use the `BeautifulSoup` tool to
-    # parse the HTML content of the website
-    html = requests.get('https://news.ycombinator.com/item?id=' + post_id)
-    # click.echo('html:')
-    # click.echo(html.content)
-    # click.echo(dir(html))
-    
-    print('\npost_id: {}'.format(post_id))
-    print('keywords: {}'.format(keywords))
-    print('combinations: {}'.format(combinations))
-    
-    kwdict = {}
-    for keyword in DEFAULT_KEYWORDS:
-        kwdict[keyword] = 0
     jobpostings = 0
+    keywordsDict = generate_keywordsDict(keywords)
+    combinationsDict = generate_combinationsDict(combinations)
     
-    #lines to get bs data
-    # url = raw_input(html)
-    # r  = requests.get("http://" +url)
-    data = html.text
-    soup = BeautifulSoup(data)
+    # print('\npost_id: {}'.format(str(post_id)))
+    # print('keywords: {}'.format(str(keywords)))
+    # print('keywordsDict: {}'.format(str(keywordsDict)))
+    # print('combinations: {}'.format(str(combinations)))
+    # print('combinationsDict: {}'.format(str(combinationsDict)))
+
+    html = requests.get('https://news.ycombinator.com/item?id=' + post_id)
+    soup = BeautifulSoup(html.text, 'html.parser')
     comments = soup.find_all('td', class_="ind")
-
     for comment in comments:
-        # print(type(comment))
-        # print(dir(comment))
+        
         width = comment.findChildren()[0].attrs['width']
-        # print('\n\nCOMMENT with width: ' + width)
         if width == '0':
+            
             jobpostings += 1
-            content = str(comment.findNextSiblings()[1].find('span', class_='c00'))
-            # print("Content: {}. END".format(content))
-            for keyword in kwdict:
-                # print("Keyword: {}".format(keyword))
-                if keyword.lower() in content.lower():
-                    kwdict[keyword] += 1
-    print('\n Dictionary: {}'.format(str(kwdict)))
-    print(jobpostings)
-   
-   
-   
-   
-    # print([link.get('href') for link in soup.find_all('a')])
+            
+            content = comment.findNextSiblings()[1].find('span', class_='c00')
+            content = unicode(content).lower()
+            
+            for keyword in keywordsDict:
+                if keyword in content:
+                    keywordsDict[keyword] += 1
+                    
+            for combination in combinationsDict:
+                if all(cKeyword in content for cKeyword in combination):
+                    combinationsDict[combination] += 1
+            
+    click.echo(generate_result(jobpostings, keywordsDict, combinationsDict))
 
+
+def generate_keywordsDict(keywords):
+    keywordsDict = {}
+    keywords = keywords.split(',')
+    for keyword in keywords:
+        keywordsDict[keyword.lower()] = 0
+    return keywordsDict
+    
+    
+def generate_combinationsDict(combinations): 
+    combinationsDict = {}
+    if combinations:
+        for combination in combinations:
+            combinationTuple = tuple(combination.lower().split('-'))
+            combinationsDict[combinationTuple] = 0
+    return combinationsDict
+    
+    
+def generate_result(jobpostings, keywordsDict, combinationsDict):
+    
+    results = ['Total job posts: {}'.format(jobpostings)]
+
+    if len(keywordsDict) > 0:
+        results.append('Keywords:')
+        for keyword in keywordsDict:
+            name = keyword.title()
+            number = keywordsDict[keyword]
+            percentage = 100*number/jobpostings
+            results.append('{}: {} ({}%)'.format(name ,number, percentage))
+            
+    if len(combinationsDict) > 0:
+        results.append('Combinations:')
+        for combination in combinationsDict:
+            name = '-'.join(combination).title()
+            number = combinationsDict[combination]
+            percentage = 100*number/jobpostings
+            results.append('{}: {} ({}%)'.format(name ,number, percentage))
+            
+    return results
+   
 
 if __name__ == '__main__':
     jobs_detector()

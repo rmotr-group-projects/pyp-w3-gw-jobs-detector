@@ -30,18 +30,22 @@ class HackerNewsTestCase(unittest.TestCase):
             jobs_detector,
             ['hacker_news', '-i', self.post_id]
         )
-        print("Test default keywords\n{}".format(result.output))
+        print('test_hacker_news_default_keywords:\n{}'.format(result.output))
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 153 (21%)',
+            'Postgres: 81 (11%)',
+            'Python: 143 (19%)',
+            'Javascript: 117 (16%)',
+            'React: 131 (18%)',
             'Pandas: 5 (0%)',
         ]
+        if result.exception:
+            import traceback
+            traceback.print_exception(*result.exc_info)
+            self.assertTrue(False)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -54,14 +58,18 @@ class HackerNewsTestCase(unittest.TestCase):
              '-i', self.post_id,
              '-k', 'python,django']
         )
-        print("Test New Custom Keywords:\n{}".format(result.output))
+        print('test_hacker_news_custom_keywords:\n{}'.format(result.output))
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 143 (19%)',
+            'Django: 36 (5%)',
         ]
+        if result.exception:
+            import traceback
+            traceback.print_exception(*result.exc_info)
+            self.assertTrue(False)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -76,21 +84,25 @@ class HackerNewsTestCase(unittest.TestCase):
         )
         print('test_hacker_news_combinations:\n{}'.format(result.output))
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 153 (21%)',
+            'Postgres: 81 (11%)',
+            'Python: 143 (19%)',
+            'Javascript: 117 (16%)',
+            'React: 131 (18%)',
             'Pandas: 5 (0%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
+            'Python-Remote: 25 (3%)',
             'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'Python-Django: 35 (4%)',
         ]
+        if result.exception:
+            import traceback
+            traceback.print_exception(*result.exc_info)
+            self.assertTrue(False)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -106,16 +118,20 @@ class HackerNewsTestCase(unittest.TestCase):
         )
         print('test_hacker_news_keywords_and_combinations:\n{}'.format(result.output))
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 143 (19%)',
+            'Django: 36 (5%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
+            'Python-Remote: 25 (3%)',
             'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'Python-Django: 35 (4%)',
         ]
+        if result.exception:
+            import traceback
+            traceback.print_exception(*result.exc_info)
+            self.assertTrue(False)
         for msg in expected:
             self.assertTrue(msg in result.output)
