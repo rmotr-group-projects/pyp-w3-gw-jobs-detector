@@ -19,6 +19,38 @@ DEFAULT_KEYWORDS = [
 
 ]
 
+
+@click.group()
+def jobs_detector():
+    pass
+
+
+
+@jobs_detector.command()
+@click.option('-i', '--post-id', type=str, required=True)
+@click.option('-k', '--keywords', type=str, default=','.join(DEFAULT_KEYWORDS))
+@click.option('-c', '--combinations', type=str,
+              callback=lambda _, x: x.split(',') if x else x)
+def hacker_news(post_id, keywords, combinations):
+    
+    data_to_parse = request_jobs_page(post_id)
+    job_posts = retrieve_job_postings(data_to_parse) # get all top comments
+    
+    # renaming this from response, I found it confusing because we already use response as a variable in the get URL and data request.
+    job_stats = []
+    
+    job_stats.append(get_total_jobs(job_posts))
+    
+    keyword_stats = get_keyword_stats(keywords, job_posts)
+    job_stats += keyword_stats_repr(keyword_stats, job_posts)
+    
+    if combinations:
+        combined_stats = get_combination_stats(combinations, job_posts)
+        job_stats += combinations_stats_repr(combined_stats, job_posts)
+    
+    return job_stats
+    
+
 def get_keyword_stats (keywords, job_posts) :
     ''' returns a dict with key = keyword, value = count of keywords in job_posts  
         "keywords": list of keywords to search the comments for.
@@ -60,52 +92,7 @@ def get_combination_stats (combinations, job_posts) :
                 combination_dict[tuple(combination)] +=1 # tuple is hashable and can be key of dictionary
     
     return combination_dict
-
-    
-
-
-@click.group()
-def jobs_detector():
-    pass
-
-
-
-@jobs_detector.command()
-@click.option('-i', '--post-id', type=str, required=True)
-@click.option('-k', '--keywords', type=str, default=','.join(DEFAULT_KEYWORDS))
-@click.option('-c', '--combinations', type=str,
-              callback=lambda _, x: x.split(',') if x else x)
-def hacker_news(post_id, keywords, combinations):
-    """
-    This subcommand aims to get jobs statistics by parsing "who is hiring?"
-    HackerNews posts based on given set of keywords.
-    post_id: post id of the hacker_news thread
-        eq: 123124
-    keywords: list of keyword to find the info of
-        eq: ['Python', 'Django']
-    combinations: when not None, it's a list of keywords combined together
-        eq: ['Python-Remote', 'Python-Django']
-    """
-    # HINT: You will probably want to use the `BeautifulSoup` tool to
-    # parse the HTML content of the website
-
-    parent_comments = get_parent_comments(post_id) # get all top comments
    
-    job_posts = parent_comments 
-    
-    response = []
-    
-    response.append(get_total_jobs(job_posts))
-    
-    keyword_stats = get_keyword_stats(keywords, job_posts)
-    response += keyword_stats_repr(keyword_stats, job_posts)
-    
-    if combinations is not None:
-        combined_stats = get_combination_stats(combinations, job_posts)
-        response += combinations_stats_repr(combined_stats, job_posts)
-    
-    print(response)
-    return response
     
 def combinations_stats_repr(stats_dic, job_posts):
     ans = []
@@ -116,6 +103,7 @@ def combinations_stats_repr(stats_dic, job_posts):
         combination_word = "-".join(word.capitalize() for word in tuple_words)
         ans.append(get_str_rep(combination_word, frequency, total_items))
     return ans
+    
 
 def keyword_stats_repr(stats_dic, job_posts):
     ans = []
@@ -133,27 +121,38 @@ def get_str_rep(word, frequency, total_items):
 def get_total_jobs(jobs_posts):
     return 'Total job posts: {}'.format(len(jobs_posts))
 
-def get_parent_comments(post_id):
-    url = settings.BASE_URL.format(post_id) 
-    response = requests.get(url)
+
+def retrieve_job_postings(response):
     soup = BeautifulSoup(response.text, 'html.parser')
     comments = soup.findAll('tr', {'class': 'athing'})
-    return [comment.text for comment in comments if is_top_comment(comment)]
+    return [comment for comment in comments if comment.find("img", width=0)]
+    
+def request_jobs_page(post_id):
+    url = settings.BASE_URL.format(post_id) 
+    return requests.get(url)
+    
+'''Why do we need so much code here? Please see simplified version above '''
+# def get_parent_comments(post_id):
+#     url = settings.BASE_URL.format(post_id) 
+#     response = requests.get(url)
+#     soup = BeautifulSoup(response.text, 'html.parser')
+#     comments = soup.findAll('tr', {'class': 'athing'})
+#     return [comment.text for comment in comments if is_top_comment(comment)]
     
     
-def is_top_comment(comment):
-    if not hasattr(comment, 'findAll'):
-        return False
-    img_nodes = comment.findAll('img')
-    if len(img_nodes) != 1:
-        return False
-    node = img_nodes[0]
-    if not hasattr(node, 'attrs'):
-        return False
-    width_attribute = node.attrs['width']
-    if width_attribute == None or width_attribute != '0':
-        return False
-    return True
+# def is_top_comment(comment):
+#     if not hasattr(comment, 'findAll'):
+#         return False
+#     img_nodes = comment.findAll('img')
+#     if len(img_nodes) != 1:
+#         return False
+#     node = img_nodes[0]
+#     if not hasattr(node, 'attrs'):
+#         return False
+#     width_attribute = node.attrs['width']
+#     if width_attribute == None or width_attribute != '0':
+#         return False
+#     return True
     
 
 if __name__ == '__main__':
