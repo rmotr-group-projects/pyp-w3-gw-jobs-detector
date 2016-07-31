@@ -51,10 +51,7 @@ def hacker_news(post_id, keywords, combinations=None):
     """
     
     # Finds if keyword is in job post, count++ if it is
-    
     count_dict = {key:0 for key in keywords}
-    # click.echo(count_dict)
-    # click.echo(len(job_posts))
     job_posts_found = 0
     for comment in job_posts:
         for word in keywords:
@@ -62,9 +59,9 @@ def hacker_news(post_id, keywords, combinations=None):
                 count_dict[word] += 1
                 job_posts_found += 1
    
-    
+    '''IMPORTANT: Check if all the combinations variables are plural; caused too much debug time already'''
     if combinations:
-        # combination = [keyword-keyword-etc,keyword-keyword-etc]
+        # combinations = [keyword-keyword-etc,keyword-keyword-etc]
         combination_check_list = [item.split('-') for item in combinations] # [[keyword,keyword,etc],[keyword,keyword,etc]]
         # click.echo(combination_check_list)
         combination_dict = {key:0 for key in combinations} # {}
@@ -72,6 +69,7 @@ def hacker_news(post_id, keywords, combinations=None):
 
         for comment in job_posts:
             for index, combo in enumerate(combination_check_list):
+                # Basically all() without extra def, then record a hit if matches
                 if [word for word in combo if word.lower() in comment.text.lower()] == combo:
                     combination_dict[combinations[index]] += 1
                 else:
@@ -90,10 +88,11 @@ def hacker_news(post_id, keywords, combinations=None):
         #     else:
         #         combination_dict[combination] += 1
 #                       
-
-    expected_list = ['Total job posts: {0}'.format(len(job_posts)), 'Total job hits: {0}'.format(job_posts_found)]
-    expected_list.append('Keywords:')
-    click.echo(count_dict.items()) 
+    
+    # Building expected output
+    expected_list = ['Total job posts: {0}'.format(len(job_posts)), 
+                    'Total job hits: {0}'.format(job_posts_found),
+                    'Keywords:']
     for key, val in count_dict.items():
         expected_list.append('{0}: {1} ({2}%)'.format(key, val, int(val/float(len(job_posts))*100)))
     
@@ -102,7 +101,6 @@ def hacker_news(post_id, keywords, combinations=None):
         for key, val in combination_dict.items():
             expected_list.append('{0}: {1} ({2}%)'.format(key, val, int(val/float(len(job_posts))*100)))
     
-    # click.echo(len(expected_list))
     # click.echo(expected_list) 
     print(expected_list)
 
