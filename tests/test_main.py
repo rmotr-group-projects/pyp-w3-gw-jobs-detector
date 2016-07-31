@@ -9,8 +9,6 @@ from click.testing import CliRunner
 from jobs_detector import settings
 from jobs_detector.main import jobs_detector
 
-import pdb
-
 
 class HackerNewsTestCase(unittest.TestCase):
 
