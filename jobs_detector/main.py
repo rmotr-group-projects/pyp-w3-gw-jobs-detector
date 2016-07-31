@@ -25,7 +25,6 @@ def jobs_detector():
     pass
 
 
-
 @jobs_detector.command()
 @click.option('-i', '--post-id', type=str, required=True)
 @click.option('-k', '--keywords', type=str, default=','.join(DEFAULT_KEYWORDS))
@@ -36,6 +35,7 @@ def hacker_news(post_id, keywords, combinations):
     data_to_parse = request_jobs_page(post_id)
     job_posts = retrieve_job_postings(data_to_parse) # get all top comments
     
+
     # renaming this from response, I found it confusing because we already use response as a variable in the get URL and data request.
     job_stats = []
     
@@ -43,11 +43,12 @@ def hacker_news(post_id, keywords, combinations):
     
     keyword_stats = get_keyword_stats(keywords, job_posts)
     job_stats += keyword_stats_repr(keyword_stats, job_posts)
-    
+
     if combinations:
         combined_stats = get_combination_stats(combinations, job_posts)
         job_stats += combinations_stats_repr(combined_stats, job_posts)
     
+    print(job_stats)
     return job_stats
     
 
@@ -125,7 +126,7 @@ def get_total_jobs(jobs_posts):
 def retrieve_job_postings(response):
     soup = BeautifulSoup(response.text, 'html.parser')
     comments = soup.findAll('tr', {'class': 'athing'})
-    return [comment for comment in comments if comment.find("img", width=0)]
+    return [comment.text for comment in comments if comment.find("img", width=0)]
     
 def request_jobs_page(post_id):
     url = settings.BASE_URL.format(post_id) 
