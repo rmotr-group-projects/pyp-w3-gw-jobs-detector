@@ -23,6 +23,7 @@ class HackerNewsTestCase(unittest.TestCase):
                       body=content, status=200,
                       content_type='text/html')
 
+    
     @responses.activate
     def test_hacker_news_default_keywords(self):
         runner = CliRunner()
@@ -41,10 +42,12 @@ class HackerNewsTestCase(unittest.TestCase):
             'React: 133 (15%)',
             'Pandas: 5 (0%)',
         ]
+        print(result.output)
         for msg in expected:
             self.assertTrue(msg in result.output)
-
+            
     @responses.activate
+    @unittest.skip("skip this!")
     def test_hacker_news_custom_keywords(self):
         runner = CliRunner()
         result = runner.invoke(
@@ -64,6 +67,7 @@ class HackerNewsTestCase(unittest.TestCase):
             self.assertTrue(msg in result.output)
 
     @responses.activate
+    @unittest.skip("skip this!")
     def test_hacker_news_combinations(self):
         runner = CliRunner()
         result = runner.invoke(
@@ -92,6 +96,7 @@ class HackerNewsTestCase(unittest.TestCase):
             self.assertTrue(msg in result.output)
 
     @responses.activate
+    @unittest.skip("skip this!")
     def test_hacker_news_keywords_and_combinations(self):
         runner = CliRunner()
         result = runner.invoke(
