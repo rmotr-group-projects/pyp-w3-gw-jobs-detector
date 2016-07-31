@@ -66,3 +66,4 @@ rmotr_b7_c2_g1_jobs_detector.egg-info/
 jobs_detector.egg-info/
 build/
 dist/
+pycache/
