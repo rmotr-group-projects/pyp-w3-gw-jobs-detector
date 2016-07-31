@@ -67,3 +67,4 @@ jobs_detector.egg-info/
 build/
 dist/
 pycache/
+.*
