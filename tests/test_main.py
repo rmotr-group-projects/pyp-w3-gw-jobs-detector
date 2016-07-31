@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from __future__ import print_function
 import re
 import os
 import unittest
@@ -8,6 +8,8 @@ from click.testing import CliRunner
 
 from jobs_detector import settings
 from jobs_detector.main import jobs_detector
+
+import pdb
 
 
 class HackerNewsTestCase(unittest.TestCase):
@@ -30,17 +32,19 @@ class HackerNewsTestCase(unittest.TestCase):
             jobs_detector,
             ['hacker_news', '-i', self.post_id]
         )
+
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 164 (22%)',
+            'Postgres: 81 (11%)',
+            'Python: 145 (20%)',
+            'Javascript: 120 (16%)',
+            'React: 134 (18%)',
             'Pandas: 5 (0%)',
         ]
+
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -54,11 +58,11 @@ class HackerNewsTestCase(unittest.TestCase):
              '-k', 'python,django']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'python: 145 (20%)',
+            'django: 37 (5%)',
         ]
         for msg in expected:
             self.assertTrue(msg in result.output)
@@ -73,20 +77,20 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 164 (22%)',
+            'Postgres: 81 (11%)',
+            'Python: 145 (20%)',
+            'Javascript: 120 (16%)',
+            'React: 134 (18%)',
             'Pandas: 5 (0%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
-            'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'python-remote: 27 (3%)',
+            'django-remote: 7 (0%)',
+            'python-django: 7 (0%)',
         ]
         for msg in expected:
             self.assertTrue(msg in result.output)
@@ -102,16 +106,16 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'python: 145 (20%)',
+            'django: 37 (5%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
-            'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'python-remote: 27 (3%)',
+            'django-remote: 7 (0%)',
+            'python-django: 7 (0%)',
         ]
         for msg in expected:
             self.assertTrue(msg in result.output)

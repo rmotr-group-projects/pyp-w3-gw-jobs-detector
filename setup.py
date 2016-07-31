@@ -23,7 +23,7 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='rmotr.com | Jobs Detector',
+    name='rmotr_b7_c2_g1_jobs_detector',
     version='0.0.1',
     description="rmotr.com Group Project | Jobs Detector",
     author='rmotr.com',

@@ -3,12 +3,9 @@ from __future__ import print_function
 import click
 import requests
 from bs4 import BeautifulSoup
-import re
-
 from .settings import BASE_URL, BASE_DIR
 from .exceptions import InvalidURLException
 
-import pdb
 
 DEFAULT_KEYWORDS = ['Remote', 'Postgres', 'Python', 'Javascript','React','Pandas']
 
@@ -35,8 +32,7 @@ def hacker_news(post_id, keywords, combinations=None):
     soup = BeautifulSoup(r.text, 'html.parser')
     
     # Get all the things (beginning of thread and comments)
-    comment_tree = soup.find_all("tr", ["athing", "athing comtr "]) #list of bs4.element.Tag objects; use .text to get plain-text
-     
+    comment_tree = soup.find_all("tr", ["athing", "athing comtr "]) 
     # Get image tag's width to determine margin
     job_posts = []
     for comment in comment_tree:
@@ -61,11 +57,8 @@ def hacker_news(post_id, keywords, combinations=None):
    
     '''IMPORTANT: Check if all the combinations variables are plural; caused too much debug time already'''
     if combinations:
-        # combinations = [keyword-keyword-etc,keyword-keyword-etc]
-        combination_check_list = [item.split('-') for item in combinations] # [[keyword,keyword,etc],[keyword,keyword,etc]]
-        # click.echo(combination_check_list)
-        combination_dict = {key:0 for key in combinations} # {}
-#       combined_kw_list = dict(zip(combinations, combination_check_list))
+        combination_check_list = [item.split('-') for item in combinations]
+        combination_dict = {key:0 for key in combinations}
 
         for comment in job_posts:
             for index, combo in enumerate(combination_check_list):
@@ -75,24 +68,10 @@ def hacker_news(post_id, keywords, combinations=None):
                 else:
                     break
         
-        # for comment in job_posts:
-        #     for combination in combinations:
-        #         break_flag = 0
-        #         for pairs in combination_check_list:
-        #             for word in pairs:
-        #                 if word.lower() not in comment.lower():
-        #                     break_flag = 1
-        #                     break
-        #         if break_flag == 1:
-        #             break
-        #     else:
-        #         combination_dict[combination] += 1
-#                       
     
     # Building expected output
-    expected_list = ['Total job posts: {0}'.format(len(job_posts)), 
-                    'Total job hits: {0}'.format(job_posts_found),
-                    'Keywords:']
+    expected_list = ['Total job posts: {0}'.format(len(job_posts)), 'Keywords:']
+
     for key, val in count_dict.items():
         expected_list.append('{0}: {1} ({2}%)'.format(key, val, int(val/float(len(job_posts))*100)))
     
@@ -101,7 +80,6 @@ def hacker_news(post_id, keywords, combinations=None):
         for key, val in combination_dict.items():
             expected_list.append('{0}: {1} ({2}%)'.format(key, val, int(val/float(len(job_posts))*100)))
     
-    # click.echo(expected_list) 
     print(expected_list)
 
 
