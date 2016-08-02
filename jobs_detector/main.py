@@ -48,7 +48,7 @@ def hacker_news(post_id, keywords, combinations):
         combined_stats = get_combination_stats(combinations, job_posts)
         job_stats += combinations_stats_repr(combined_stats, job_posts)
     
-    print(job_stats)
+    click.echo(job_stats);
     return job_stats
     
 

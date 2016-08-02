@@ -118,6 +118,6 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 7 (0%)',
             'Python-Django: 36 (5%)',
         ]
-        print(result.output)
+        
         for msg in expected:
             self.assertTrue(msg in result.output)
