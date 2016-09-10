@@ -2,8 +2,8 @@ import os
 import urllib
 import click
 from bs4 import BeautifulSoup
-from jobs_detector import exceptions
-from jobs_detector import settings
+from . import exceptions
+from . import settings
 
 DEFAULT_KEYWORDS = ['remote', 'postgres',
                     'python', 'javascript', 'react', 'pandas']
@@ -121,7 +121,3 @@ def get_html(post_id):
     webpage_in_file = urllib.URLopener()
     webpage_in_file.retrieve(url_to_fetch, path_to_save)
     return path_to_save
-
-
-if __name__ == '__main__':
-    jobs_detector()

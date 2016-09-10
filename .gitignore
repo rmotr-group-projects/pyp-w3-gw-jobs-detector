@@ -57,7 +57,7 @@ docs/_build/
 
 # PyBuilder
 target/
-.pypirc
+#.pypirc
 setup_old.py
 
 #Ipython Notebook

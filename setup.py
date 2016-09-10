@@ -23,10 +23,10 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='rmotr.com | Jobs Detector',
-    version='0.0.1',
-    description="rmotr.com Group Project | Jobs Detector",
-    author='rmotr.com',
+    name='rmotr-b8-pyp-g2-jobs-detector',
+    version='0.1',
+    description="rmotr.com Group 2 | Jobs Detector",
+    author='Preston R, Sharma N',
     author_email='questions@rmotr.com',
     url = 'https://github.com/prestonr83/pyp-w3-gw-jobs-detector/',
     download_url = 'https://github.com/prestonr83/pyp-w3-gw-jobs-detector/tarball/0.1',
