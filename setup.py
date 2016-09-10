@@ -24,12 +24,12 @@ class PyTest(TestCommand):
 
 setup(
     name='rmotr-b8-pyp-g2-jobs-detector',
-    version='0.3',
+    version='0.3.1',
     description="rmotr.com Group 2 | Jobs Detector",
     author='Preston R, Sharma N',
     author_email='questions@rmotr.com',
     url = 'https://github.com/prestonr83/pyp-w3-gw-jobs-detector/',
-    download_url = 'https://github.com/prestonr83/pyp-w3-gw-jobs-detector/tarball/0.1',
+    download_url = 'https://github.com/prestonr83/pyp-w3-gw-jobs-detector/tarball/0.3',
     license='CC BY-SA 4.0 License',
     packages=['jobs_detector'],
     maintainer='rmotr.com',

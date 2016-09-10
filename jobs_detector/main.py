@@ -1,5 +1,6 @@
 import os
-import urllib
+import sys
+from six.moves import urllib
 import click
 from bs4 import BeautifulSoup
 from . import exceptions
@@ -7,6 +8,8 @@ from . import settings
 
 DEFAULT_KEYWORDS = ['remote', 'postgres',
                     'python', 'javascript', 'react', 'pandas']
+
+PYTHON3 = sys.version_info >= (3, 0)
 
 
 @click.group()
@@ -45,7 +48,7 @@ def get_stats_for_kw(posts, keywords):
         for post in posts:
             count += 1 if word_count(post, word) else 0
         if count > 0:
-            word_pct = round((count * 100) / len(posts))
+            word_pct = (count * 100) / len(posts)
             kw_dict[word.title()] = (count, int(word_pct))
 
     return kw_dict
@@ -69,7 +72,7 @@ def get_stats_for_cm(posts, combinations):
             if len(val) == len(combo_list):
                 count += 1
         if count > 0:
-            combo_pct = round((count * 100) / len(posts))
+            combo_pct = (count * 100) / len(posts)
             combo_dict[combo] = (count, int(combo_pct))
 
     return combo_dict
@@ -118,6 +121,10 @@ def get_html(post_id):
     url_to_fetch = settings.BASE_URL.replace('{}', post_id)
     path_to_save = os.path.join(settings.BASE_DIR, post_id + ".html")
 
-    webpage_in_file = urllib.URLopener()
-    webpage_in_file.retrieve(url_to_fetch, path_to_save)
+    urldata = urllib.request.urlopen(url_to_fetch)
+    with open(path_to_save, 'w') as urlfile:
+        if not PYTHON3:
+            urlfile.write(urldata.read())
+        else:
+            urlfile.write(urldata.read().decode('cp437'))
     return path_to_save
