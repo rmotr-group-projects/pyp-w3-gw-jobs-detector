@@ -24,7 +24,7 @@ class PyTest(TestCommand):
 
 setup(
     name='rmotr-b8-pyp-g2-jobs-detector',
-    version='0.1',
+    version='0.3',
     description="rmotr.com Group 2 | Jobs Detector",
     author='Preston R, Sharma N',
     author_email='questions@rmotr.com',

@@ -84,7 +84,7 @@ def display_to_terminal(post_count, kw_dict, combo_dict):
         print("{}: {} ({}%)".format(word, count[0], count[1]))
 
     if combo_dict:
-        print "\nCombinations:"
+        print("\nCombinations:")
         for combo, count in combo_dict.items():
             print("{}: {} ({}%)".format(combo, count[0], count[1]))
 
