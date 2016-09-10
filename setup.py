@@ -28,6 +28,8 @@ setup(
     description="rmotr.com Group Project | Jobs Detector",
     author='rmotr.com',
     author_email='questions@rmotr.com',
+    url = 'https://github.com/prestonr83/pyp-w3-gw-jobs-detector/',
+    download_url = 'https://github.com/prestonr83/pyp-w3-gw-jobs-detector/tarball/0.1',
     license='CC BY-SA 4.0 License',
     packages=['jobs_detector'],
     maintainer='rmotr.com',

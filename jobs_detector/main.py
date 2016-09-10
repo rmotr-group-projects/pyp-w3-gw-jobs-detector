@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 from jobs_detector import exceptions
 from jobs_detector import settings
 
-DEFAULT_KEYWORDS = ['remote','postgres','python','javascript','react','pandas']
+DEFAULT_KEYWORDS = ['remote', 'postgres',
+                    'python', 'javascript', 'react', 'pandas']
 
 
 @click.group()
@@ -29,8 +30,6 @@ def hacker_news(post_id, keywords, combinations):
     kw_dict = get_stats_for_kw(posts, word_list)
     combo_dict = get_stats_for_cm(posts, combinations)
     display_to_terminal(len(posts), kw_dict, combo_dict)
-
-    
 
 
 def get_stats_for_kw(posts, keywords):
