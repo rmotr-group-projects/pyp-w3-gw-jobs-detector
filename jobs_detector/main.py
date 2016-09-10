@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from jobs_detector import exceptions
 from jobs_detector import settings
 
-DEFAULT_KEYWORDS = ['Remote','Postgres','Python','Javascript','React','Pandas']
+DEFAULT_KEYWORDS = ['remote','postgres','python','javascript','react','pandas']
 
 
 @click.group()
@@ -18,7 +18,7 @@ def jobs_detector():
 @click.option('-k', '--keywords', type=str, default=','.join(DEFAULT_KEYWORDS),
               help='Keywords for counting')
 @click.option('-c', '--combinations', type=str, default=None,
-              callback=lambda _, x: x.split(',') if x else x, help='Keywords with combo')
+              callback=lambda ctx, _, x: x.split(',') if x else x, help='Keywords with combo')
 def hacker_news(post_id, keywords, combinations):
     '''
     This subcommand aims to get jobs statistics by parsing "who is hiring?"
@@ -29,6 +29,8 @@ def hacker_news(post_id, keywords, combinations):
     kw_dict = get_stats_for_kw(posts, word_list)
     combo_dict = get_stats_for_cm(posts, combinations)
     display_to_terminal(len(posts), kw_dict, combo_dict)
+
+    
 
 
 def get_stats_for_kw(posts, keywords):
