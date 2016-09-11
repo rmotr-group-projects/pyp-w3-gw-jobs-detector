@@ -32,7 +32,7 @@ setup(
     packages=['jobs_detector'],
     maintainer='rmotr.com',
     tests_require=[
-        'pytest==2.9.1'
+        'pytest==3.0.2'
     ],
     zip_safe=False,
     cmdclass={'test': PyTest},

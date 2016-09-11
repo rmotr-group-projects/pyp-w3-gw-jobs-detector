@@ -3,7 +3,7 @@ import sys
 import click
 from bs4 import BeautifulSoup
 from six.moves import urllib
-import settings
+from . import settings
 
 DEFAULT_KEYWORDS = ['remote','Postgres','python','javascript','react','pandas'
     # set some default keywords here
