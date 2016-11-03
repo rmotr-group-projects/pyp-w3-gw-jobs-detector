@@ -2,7 +2,7 @@ import click
 import requests
 from bs4 import BeautifulSoup
 
-#from jobs_detector import settings
+from jobs_detector import settings
 
 DEFAULT_KEYWORDS = [
     'remote',
