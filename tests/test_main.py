@@ -16,7 +16,7 @@ class HackerNewsTestCase(unittest.TestCase):
         self.post_id = '11814828'
         fixture_path = os.path.join(settings.BASE_DIR, 'tests',
                                     'fixtures', '{}.html'.format(self.post_id))
-        with open(fixture_path, encoding="utf8") as f:
+        with open(fixture_path) as f:
             content = f.read()
         responses.add(responses.GET,
                       re.compile(re.escape(settings.BASE_URL.format(self.post_id))),
