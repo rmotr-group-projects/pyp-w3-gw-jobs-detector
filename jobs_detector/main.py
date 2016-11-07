@@ -31,8 +31,8 @@ def hacker_news(post_id, keywords, combinations):
     # HINT: You will probably want to use the `BeautifulSoup` tool to
     # parse the HTML content of the website
 
-    keywords = [k.capitalize() for k in keywords.split(',')]
-    combinations = {comb.title(): 0 for comb in combinations} if combinations else {}
+    keywords = {k.capitalize(): [] for k in keywords.split(',')}
+    combinations = {combination.title(): [] for combination in combinations} if combinations else {}
 
     content = requests.get('https://news.ycombinator.com/item', params={'id': post_id}).text
     soup = BeautifulSoup(content, 'html.parser')
@@ -43,27 +43,25 @@ def hacker_news(post_id, keywords, combinations):
         if post.find("img", width="0") and post.find('span', class_='c00'):
             job_posts.append(post)
 
-    jobs = {k.capitalize(): [] for k in keywords}
-
     for job in job_posts:
-        for key in jobs:
+        for key in keywords:
             if key.lower() in job.get_text().lower():
-                jobs[key].append(job)
+                keywords[key].append(job)
 
     print('Total job posts: {}\n\nKeywords:'.format(len(job_posts)))
-    for k, v in jobs.items():
+    for k, v in keywords.items():
         print('{}: {} ({}%)'.format(k, len(v), int(len(v)*100/len(job_posts))))
 
     if combinations:
         for job in job_posts:
             for combination in combinations:
-                keywords = [k.lower() for k in combination.split('-')]
-                if len([keyword for keyword in keywords if keyword in job.get_text().lower()]) == 2:
-                    combinations[combination] += 1
+                combination_keywords = [k.lower() for k in combination.split('-')]
+                if len([c_k for c_k in combination_keywords if c_k in job.get_text().lower()]) == 2:
+                    combinations[combination].append(job)
 
         print('\nCombinations:')
         for k, v in combinations.items():
-            print('{}: {} ({}%)'.format(k, v, int(v*100/len(job_posts))))
+            print('{}: {} ({}%)'.format(k, len(v), int(len(v)*100/len(job_posts))))
 
 if __name__ == '__main__':
     jobs_detector()
