@@ -23,11 +23,12 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='rmotr.com | Jobs Detector',
+    name='rmotr-b9-pyp-g1-jobs-detector',
     version='0.0.1',
-    description="rmotr.com Group Project | Jobs Detector",
-    author='rmotr.com',
+    description="rmotr.com Group 6 | Jobs Detector",
+    author='Stéphan Gouin',
     author_email='questions@rmotr.com',
+    url = 'https://github.com/StefGou/pyp-w3-gw-jobs-detector/',
     license='CC BY-SA 4.0 License',
     packages=['jobs_detector'],
     maintainer='rmotr.com',
