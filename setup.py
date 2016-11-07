@@ -24,18 +24,22 @@ class PyTest(TestCommand):
 
 setup(
     name='rmotr-b9-c1-g5-jobs-detector',
-    version='0.0.1',
+    version='0.0.3',
     description="rmotr.com Group Project | Jobs Detector",
     author='Delio Castillo',
     author_email='jangeador@gmail.com',
+    url='https://github.com/jangeador/pyp-w3-gw-jobs-detector',
     license='CC BY-SA 4.0 License',
     packages=['jobs_detector'],
     maintainer='rmotr.com',
     install_requires=[
-        'bs4>=0.0.1',
-        'click>=6.6',
-        'requests_cache>=0.4.12'
+        'bs4',
+        'click',
+        'requests_cache'
     ],
+    entry_points={
+        'console_scripts':['jobs_detector=jobs_detector.main:jobs_detector']
+    },
     tests_require=[
         'pytest==2.9.1'
     ],
