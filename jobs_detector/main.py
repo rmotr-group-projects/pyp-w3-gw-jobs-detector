@@ -5,9 +5,13 @@ from bs4 import BeautifulSoup
 from jobs_detector import settings
 
 DEFAULT_KEYWORDS = [
-    # set some default keywords here
+    'Remote',
+    'Postgres',
+    'Python',
+    'Javascript',
+    'React',
+    'Pandas'
 ]
-
 
 @click.group()
 def jobs_detector():
@@ -26,8 +30,40 @@ def hacker_news(post_id, keywords, combinations):
     """
     # HINT: You will probably want to use the `BeautifulSoup` tool to
     # parse the HTML content of the website
-    pass
 
+    keywords = [k.capitalize() for k in keywords.split(',')]
+    combinations = {comb.title(): 0 for comb in combinations} if combinations else {}
+
+    content = requests.get('https://news.ycombinator.com/item', params={'id': post_id}).text
+    soup = BeautifulSoup(content, 'html.parser')
+
+    posts = soup.find_all("tr", class_="athing")
+    job_posts = []
+    for post in posts:
+        if post.find("img", width="0") and post.find('span', class_='c00'):
+            job_posts.append(post)
+
+    jobs = {k.capitalize(): [] for k in keywords}
+
+    for job in job_posts:
+        for key in jobs:
+            if key.lower() in job.get_text().lower():
+                jobs[key].append(job)
+
+    print('Total job posts: {}\n\nKeywords:'.format(len(job_posts)))
+    for k, v in jobs.items():
+        print('{}: {} ({}%)'.format(k, len(v), int(len(v)*100/len(job_posts))))
+
+    if combinations:
+        for job in job_posts:
+            for combination in combinations:
+                keywords = [k.lower() for k in combination.split('-')]
+                if len([keyword for keyword in keywords if keyword in job.get_text().lower()]) == 2:
+                    combinations[combination] += 1
+
+        print('\nCombinations:')
+        for k, v in combinations.items():
+            print('{}: {} ({}%)'.format(k, v, int(v*100/len(job_posts))))
 
 if __name__ == '__main__':
     jobs_detector()
