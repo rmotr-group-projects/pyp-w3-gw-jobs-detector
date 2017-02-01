@@ -32,8 +32,15 @@ setup(
     packages=['jobs_detector'],
     maintainer='rmotr.com',
     tests_require=[
-        'pytest==2.9.1'
+        'pytest==2.9.1',
+    ],
+    install_requires=[
+        'bs4==0.0.1',
+        'click==6.6',
+        'responses==0.5.1'
     ],
     zip_safe=False,
     cmdclass={'test': PyTest},
 )
+# Dont think that was right, gave requiremnt parse  error.
+# maybe add a new line
