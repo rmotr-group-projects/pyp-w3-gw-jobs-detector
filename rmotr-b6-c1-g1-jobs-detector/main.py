@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 from jobs_detector import settings
-# import settings
 
 import logging, sys
 logging.basicConfig(filename=settings.LOG, level=logging.DEBUG)
