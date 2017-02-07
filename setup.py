@@ -25,11 +25,11 @@ class PyTest(TestCommand):
 setup(
     name='rmotr-b6-c1-g1-jobs-detector',
     version='0.0.1',
-    description="rmotr.com Group 1 Project | Jobs Detector",
+    description="rmotr.com b10 c1 g1 | Jobs Detector",
     author='Vojtech Kotek, Tracy Homer',
     author_email='kotek.vojtech@gmail.com',
     license='CC BY-SA 4.0 License',
-    packages=['rmotr-b6-c1-g1-jobs-detector'],
+    packages=['rmotr_b10_c1_g1_jobs_detector'],
     maintainer='kotek.co',
     tests_require=[
         'pytest==2.9.1',
@@ -41,8 +41,8 @@ setup(
     ],
     zip_safe=False,
     cmdclass={'test': PyTest},
-    url = "https://github.com/vkotek/pyp-w3-gw-jobs-detector/",
-    download_url="https://github.com/vkotek/pyp-w3-gw-jobs-detector/tarball/0.1",
+    url = "https://github.com/vkotek/pyp-w3-g1-jobs-detector/",
+    download_url="https://github.com/vkotek/pyp-w3-g1-jobs-detector/tarball/0.1",
 )
 # Dont think that was right, gave requiremnt parse  error.
 # maybe add a new line

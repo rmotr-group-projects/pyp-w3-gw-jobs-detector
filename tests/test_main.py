@@ -6,8 +6,8 @@ import unittest
 import responses
 from click.testing import CliRunner
 
-from jobs_detector import settings
-from jobs_detector.main import jobs_detector
+from rmotr_b10_c1_g1_jobs_detector import settings
+from rmotr_b10_c1_g1_jobs_detector.main import jobs_detector
 
 
 class HackerNewsTestCase(unittest.TestCase):

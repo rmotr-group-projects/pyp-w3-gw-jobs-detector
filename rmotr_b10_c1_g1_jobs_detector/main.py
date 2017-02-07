@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 import click
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-from jobs_detector import settings
+from rmotr_b10_c1_g1_jobs_detector import settings
+# import settings
 
 import logging, sys
 logging.basicConfig(filename=settings.LOG, level=logging.DEBUG)
@@ -48,11 +50,19 @@ def hacker_news(post_id, keywords, combinations):
     
     url = settings.BASE_URL.format(post_id)
 
-    try:
-        html = requests.get(url).content
-    except:
-        logging.warning("Could not connect to {}".format(url))
-        
+    
+    logging.info('GET: {}'.format(url))
+    html = requests.get(url)
+    
+    logging.info('{} : {}'.format(html, url))
+    
+    logging.info('Response: {}'.format(html))
+    logging.info('Encoding: {}'.format(html.encoding))
+    html.encoding = 'UTF-8'
+    logging.info('Encoding after: {}'.format(html.encoding))
+    html = html.text
+    # html = html.text
+    
     soup = BeautifulSoup(html, 'html.parser')
     
     posts = soup.find_all('img', width="0")
@@ -62,7 +72,6 @@ def hacker_news(post_id, keywords, combinations):
         try:
             parent = post.parent.next_sibling.next_sibling
             comment = parent.get_text()
-            logging.info(type(comment))
         
             # Find keywords in text
             comment_words = comment.lower()
