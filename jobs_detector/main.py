@@ -1,7 +1,6 @@
 import click
 import requests
 from bs4 import BeautifulSoup
-import pdb
 
 from jobs_detector import settings
 
