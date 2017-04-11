@@ -31,14 +31,14 @@ class HackerNewsTestCase(unittest.TestCase):
             ['hacker_news', '-i', self.post_id]
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 691',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 153 (22%)',
+            'Postgres: 81 (11%)',
+            'Python: 143 (20%)',
+            'Javascript: 117 (16%)',
+            'React: 131 (18%)',
             'Pandas: 5 (0%)',
         ]
         for msg in expected:
@@ -54,11 +54,11 @@ class HackerNewsTestCase(unittest.TestCase):
              '-k', 'python,django']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 691',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 143 (20%)',
+            'Django: 36 (5%)',
         ]
         for msg in expected:
             self.assertTrue(msg in result.output)
@@ -73,20 +73,20 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 691',
 
             'Keywords:',
-            'Remote: 174 (19%)',
-            'Postgres: 81 (9%)',
-            'Python: 143 (16%)',
-            'Javascript: 118 (13%)',
-            'React: 133 (15%)',
+            'Remote: 153 (22%)',
+            'Postgres: 81 (11%)',
+            'Python: 143 (20%)',
+            'Javascript: 117 (16%)',
+            'React: 131 (18%)',
             'Pandas: 5 (0%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
+            'Python-Remote: 25 (3%)',
             'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'Python-Django: 35 (5%)',
         ]
         for msg in expected:
             self.assertTrue(msg in result.output)
@@ -102,16 +102,16 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 691',
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 143 (20%)',
+            'Django: 36 (5%)',
 
             'Combinations:',
-            'Python-Remote: 25 (2%)',
+            'Python-Remote: 25 (3%)',
             'Django-Remote: 6 (0%)',
-            'Python-Django: 35 (3%)',
+            'Python-Django: 35 (5%)',
         ]
         for msg in expected:
             self.assertTrue(msg in result.output)
