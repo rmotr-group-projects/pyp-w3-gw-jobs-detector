@@ -5,12 +5,11 @@ from bs4 import BeautifulSoup
 from jobs_detector import settings
 
 DEFAULT_KEYWORDS = [
-    # set some default keywords here
-    'python',
     'remote',
+    'postgres',
+    'python',
     'javascript',
     'react',
-    'postgres',
     'pandas'
 ]
 
@@ -26,53 +25,74 @@ def jobs_detector():
 @click.option('-c', '--combinations', type=str,
               callback=lambda _, x: x.split(',') if x else x)
 def hacker_news(post_id, keywords, combinations):
-    """
-    This subcommand aims to get jobs statistics by parsing "who is hiring?"
-    HackerNews posts based on given set of keywords.
-    """
-    # HINT: You will probably want to use the `BeautifulSoup` tool to
-    # parse the HTML content of the website
+    keywords_list = keywords.split(',')
+    postings = get_postings(post_id, keywords_list)
+
+    search_results = search_for_keywords(postings, keywords_list)
+    print_results(postings, search_results)
+
+    if combinations:
+        combo_terms = []
+        for c in combinations:
+            combo_terms.append(tuple(c.split('-')))
+        combo_results = search_combinations(postings, combo_terms)
+        print_combo(postings, combo_results)
+
+
+def get_postings(post_id, keywords_list):
     url = settings.BASE_URL.format(post_id)
-    content = requests.get(url).content
-    soup = BeautifulSoup(content, 'html.parser')
+    r = requests.get(url)
+    if r.status_code == requests.codes.ok:
+        postings = []
+        soup = BeautifulSoup(r.text, 'html.parser')
+        for td in soup.find_all('td', class_="ind"):  # find comment spacers
+            # if spacer width is zero, comment is a top level comment
+            if td.img.get('width') == '0':
+                # spans with class c00 contain the actual comment text
+                postings.append(td.parent.find("span", class_="c00").text)
+        return postings
 
-    post_counter = 0
-    keywords_stats = {}
-    combinations_stats = {}
-    for span in soup.find_all('span', class_='c00'):
-        post_counter += 1
 
-        # keyword stats
-        for kw in keywords.split(','):
-            keywords_stats.setdefault(kw, 0)
-            if kw in span.get_text().lower():
-                keywords_stats[kw] += 1
+def _check_combination(posting, combination):
+    return all([c in posting for c in combination])
 
-        # combination stats
-        if not combinations:
-            continue
-        for comb_string in combinations:
-            combinations_stats.setdefault(comb_string, 0)
-            splitted = comb_string.split('-')
-            if all([c in span.get_text().lower() for c in splitted]):
-                combinations_stats[comb_string] += 1
 
-    click.echo('Total job posts: {}'.format(post_counter))
-    click.echo()
+def search_for_keywords(postings, keywords):
+    search_results = {key: sum([1 for post in postings if key in post])
+                      for key in keywords}
+    return search_results
 
-    if keywords_stats:
-        click.echo('Keywords:')
-        for kw, counter in keywords_stats.items():
-            click.echo('{}: {} ({}%)'.format(
-                kw.title(), counter, int((counter / float(post_counter)) * 100)))
-        click.echo()
 
-    if combinations_stats:
-        click.echo('Combinations:')
-        for cb, counter in combinations_stats.items():
-            click.echo('{}: {} ({}%)'.format(
-                cb.title(), counter, int((counter / float(post_counter)) * 100)))
+def search_combinations(postings, combos):
+    print('search combos')
+    search_results = {c: sum([1 for post in postings
+                              if _check_combination(post, c)])
+                      for c in combos}
+    print('search complete')
+    return search_results
 
+
+RESULT_FORMAT = "{}: {} ({}%)"
+
+
+def print_results(postings, search_results):
+    post_count = len(postings)
+    print("Total job posts: {}".format(post_count))
+    print("Keywords:")
+    for keyword in search_results.keys():
+        results = search_results[keyword]
+        percentage = int((float(results)/post_count)*100)
+        print(RESULT_FORMAT.format(keyword.capitalize(), results, percentage))
+
+
+def print_combo(postings, combo_results):
+    post_count = len(postings)
+    print("Combinations:")
+    for combo in combo_results.keys():
+        results = combo_results[combo]
+        percentage = int((float(results)/post_count)*100)
+        combo_name = "-".join([x.capitalize() for x in combo])
+        print(RESULT_FORMAT.format(combo_name, results, percentage))
 
 if __name__ == '__main__':
     jobs_detector()
