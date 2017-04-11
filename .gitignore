@@ -57,6 +57,11 @@ docs/_build/
 
 # PyBuilder
 target/
+#.pypirc
+setup_old.py
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+#c9 tempfiles
+.~c9*
