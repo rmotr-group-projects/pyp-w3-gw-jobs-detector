@@ -54,15 +54,16 @@ class HackerNewsTestCase(unittest.TestCase):
              '-k', 'python,django']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 719', #883
 
             'Keywords:',
-            'Python: 143 (16%)',
-            'Django: 36 (4%)',
+            'Python: 290 (40%)', #143 16%
+            'Django: 37 (5%)', #36 4%
         ]
+        print ("\nresults\n", result.output)
         for msg in expected:
             self.assertTrue(msg in result.output)
-
+            
     @responses.activate
     def test_hacker_news_combinations(self):
         runner = CliRunner()
@@ -73,7 +74,7 @@ class HackerNewsTestCase(unittest.TestCase):
              '-c', 'python-remote,python-django,django-remote']
         )
         expected = [
-            'Total job posts: 883',
+            'Total job posts: 781', #883
 
             'Keywords:',
             'Remote: 174 (19%)',
