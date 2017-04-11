@@ -18,6 +18,8 @@ class HackerNewsTestCase(unittest.TestCase):
                                     'fixtures', '{}.html'.format(self.post_id))
         with open(fixture_path) as f:
             content = f.read()
+
+
         responses.add(responses.GET,
                       re.compile(re.escape(settings.BASE_URL.format(self.post_id))),
                       body=content, status=200,
@@ -41,6 +43,10 @@ class HackerNewsTestCase(unittest.TestCase):
             'React: 133 (15%)',
             'Pandas: 5 (0%)',
         ]
+        # For debugging output
+        # print(result.output)
+        # print(result.exception)
+        # print(result.exc_info)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -60,6 +66,10 @@ class HackerNewsTestCase(unittest.TestCase):
             'Python: 143 (16%)',
             'Django: 36 (4%)',
         ]
+        # For debugging output
+        # print(result.output)
+        # print(result.exception)
+        # print(result.exc_info)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -88,6 +98,10 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 6 (0%)',
             'Python-Django: 35 (3%)',
         ]
+        # For debugging output
+        # print(result.output)
+        # print(result.exception)
+        # print(result.exc_info)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -113,5 +127,9 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 6 (0%)',
             'Python-Django: 35 (3%)',
         ]
+        # For debugging output
+        # print(result.output)
+        # print(result.exception)
+        # print(result.exc_info)
         for msg in expected:
             self.assertTrue(msg in result.output)
