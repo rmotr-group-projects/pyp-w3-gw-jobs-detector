@@ -23,17 +23,24 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='rmotr.com | Jobs Detector',
-    version='0.0.1',
+    name='rmotr-b7-c1-g1-jobs-detectorr',
+    version='0.0.3',
     description="rmotr.com Group Project | Jobs Detector",
-    author='rmotr.com',
-    author_email='questions@rmotr.com',
+    author='Jessica Ngo',
+    author_email='jessica.ngo@live.com',
     license='CC BY-SA 4.0 License',
     packages=['jobs_detector'],
     maintainer='rmotr.com',
     tests_require=[
         'pytest==2.9.1'
     ],
+    install_requires=[
+        'responses',
+        'click'
+        ],
+    entry_points={
+        'console_scripts':['jobs_detector=jobs_detector.main:jobs_detector']
+    },
     zip_safe=False,
     cmdclass={'test': PyTest},
 )
