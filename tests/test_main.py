@@ -30,6 +30,9 @@ class HackerNewsTestCase(unittest.TestCase):
             jobs_detector,
             ['hacker_news', '-i', self.post_id]
         )
+        print("======================")
+        print(result.output)
+        print("======================")
         expected = [
             'Total job posts: 883',
 
@@ -42,6 +45,7 @@ class HackerNewsTestCase(unittest.TestCase):
             'Pandas: 5 (0%)',
         ]
         for msg in expected:
+            
             self.assertTrue(msg in result.output)
 
     @responses.activate
@@ -53,6 +57,9 @@ class HackerNewsTestCase(unittest.TestCase):
              '-i', self.post_id,
              '-k', 'python,django']
         )
+        print("======================")
+        print(result.output)
+        print("======================")
         expected = [
             'Total job posts: 883',
 
@@ -72,6 +79,10 @@ class HackerNewsTestCase(unittest.TestCase):
              '-i', self.post_id,
              '-c', 'python-remote,python-django,django-remote']
         )
+        print("======================")
+        print(result.output)
+        print("======================")
+
         expected = [
             'Total job posts: 883',
 
@@ -101,6 +112,10 @@ class HackerNewsTestCase(unittest.TestCase):
              '-k', 'python,django',
              '-c', 'python-remote,python-django,django-remote']
         )
+        print("======================")
+        print(result.output)
+        print("======================")
+
         expected = [
             'Total job posts: 883',
 
