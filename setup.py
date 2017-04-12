@@ -30,6 +30,11 @@ setup(
     author_email='questions@rmotr.com',
     license='CC BY-SA 4.0 License',
     packages=['jobs_detector'],
+    entry_points={
+        'console_scripts': [
+            'jobs_detector=jobs_detector.main:jobs_detector'
+            ]
+    },
     maintainer='rmotr.com',
     tests_require=[
         'pytest==2.9.1'
