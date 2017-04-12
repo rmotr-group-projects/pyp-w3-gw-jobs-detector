@@ -1,7 +1,10 @@
+from __future__ import print_function
 # -*- coding: utf-8 -*-
 import re
 import os
 import unittest
+import sys
+import traceback
 
 import responses
 from click.testing import CliRunner
@@ -41,8 +44,26 @@ class HackerNewsTestCase(unittest.TestCase):
             'React: 133 (15%)',
             'Pandas: 5 (0%)',
         ]
+        # Print useful error messages
+        if not isinstance(result.exc_info[1], SystemExit) or\
+           result.exc_info[1].code != 0:
+            print(result.output, file=sys.stderr)
+            print(result.exc_info, file=sys.stderr)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            try:
+                self.assertTrue(msg in result.output)
+            except AssertionError:
+                # Output does not match, print output and expected output
+                print('Program output:', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                print(result.output, file=sys.stderr)
+                print('\nExpected output', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                for msg in expected:
+                    print(msg, file=sys.stderr)
+                raise AssertionError('Output does not match ')
 
     @responses.activate
     def test_hacker_news_custom_keywords(self):
@@ -60,8 +81,26 @@ class HackerNewsTestCase(unittest.TestCase):
             'Python: 143 (16%)',
             'Django: 36 (4%)',
         ]
+        # Print useful error messages
+        if not isinstance(result.exc_info[1], SystemExit) or\
+           result.exc_info[1].code != 0:
+            print(result.output, file=sys.stderr)
+            print(result.exc_info, file=sys.stderr)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            try:
+                self.assertTrue(msg in result.output)
+            except AssertionError:
+                # Output does not match, print output and expected output
+                print('Program output:', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                print(result.output, file=sys.stderr)
+                print('\nExpected output', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                for msg in expected:
+                    print(msg, file=sys.stderr)
+                raise AssertionError('Output does not match ')
 
     @responses.activate
     def test_hacker_news_combinations(self):
@@ -88,8 +127,26 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 6 (0%)',
             'Python-Django: 35 (3%)',
         ]
+        # Print useful error messages
+        if not isinstance(result.exc_info[1], SystemExit) or\
+           result.exc_info[1].code != 0:
+            print(result.output, file=sys.stderr)
+            print(result.exc_info, file=sys.stderr)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            try:
+                self.assertTrue(msg in result.output)
+            except AssertionError:
+                # Output does not match, print output and expected output
+                print('Program output:', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                print(result.output, file=sys.stderr)
+                print('\nExpected output', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                for msg in expected:
+                    print(msg, file=sys.stderr)
+                raise AssertionError('Output does not match ')
 
     @responses.activate
     def test_hacker_news_keywords_and_combinations(self):
@@ -113,5 +170,23 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 6 (0%)',
             'Python-Django: 35 (3%)',
         ]
+        # Print useful error messages
+        if not isinstance(result.exc_info[1], SystemExit) or\
+           result.exc_info[1].code != 0:
+            print(result.output, file=sys.stderr)
+            print(result.exc_info, file=sys.stderr)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
-            self.assertTrue(msg in result.output)
+            try:
+                self.assertTrue(msg in result.output)
+            except AssertionError:
+                # Output does not match, print output and expected output
+                print('Program output:', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                print(result.output, file=sys.stderr)
+                print('\nExpected output', file=sys.stderr)
+                print('===============', file=sys.stderr)
+                for msg in expected:
+                    print(msg, file=sys.stderr)
+                raise AssertionError('Output does not match ')
