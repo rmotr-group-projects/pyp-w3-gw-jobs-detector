@@ -74,7 +74,7 @@ You can also navigate up and down the DOM(Document Object Model) tree. Say we do
 ```
 li = soup.find('li')
 ul = li.parent
-``
+```
 And if we want the children of something (in this case getting the `li` tags once we have the `ul`) we can do that too.
 
 ```
