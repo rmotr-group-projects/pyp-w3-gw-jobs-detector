@@ -24,7 +24,7 @@ def jobs_detector():
 @click.option('-i', '--post-id', type=str, required=True)
 @click.option('-k', '--keywords', type=str, default=','.join(DEFAULT_KEYWORDS))
 @click.option('-c', '--combinations', type=str,
-              callback=lambda _, x: x.split(',') if x else x)
+              callback=lambda _, __, x: x.split(',') if x else x)
 def hacker_news(post_id, keywords, combinations):
     keywords_list = keywords.split(',')
 
