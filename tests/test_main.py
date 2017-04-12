@@ -2,6 +2,7 @@
 import re
 import os
 import unittest
+import traceback
 
 import responses
 from click.testing import CliRunner
