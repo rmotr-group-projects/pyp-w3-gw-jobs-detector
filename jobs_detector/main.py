@@ -70,7 +70,8 @@ def search_for_keywords(job_offers, keywords):
     Returns a dictionary containing all keywords as keys and the counter
     of job offers that include that keyword.
     """
-    search_results = {key: sum([1 for post in job_offers if key in post])
+    search_results = {key: sum([1 for post in job_offers
+                                if key.lower() in post.lower()])
                       for key in keywords}
     return search_results
 
@@ -80,7 +81,7 @@ def _check_combination(job_offer, combination):
     Returns True if all keywords in the combination are included
     in given job offer text, and False otherwise.
     """
-    return all([c in job_offer for c in combination])
+    return all([c.lower() in job_offer.lower() for c in combination])
 
 
 def search_combinations(job_offers, combos):
