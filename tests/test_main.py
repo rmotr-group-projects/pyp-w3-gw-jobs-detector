@@ -8,6 +8,7 @@ from click.testing import CliRunner
 
 from jobs_detector import settings
 from jobs_detector.main import jobs_detector
+import pdb
 
 
 class HackerNewsTestCase(unittest.TestCase):
@@ -41,6 +42,7 @@ class HackerNewsTestCase(unittest.TestCase):
             'React: 133 (15%)',
             'Pandas: 5 (0%)',
         ]
+        print(result.output)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -88,6 +90,7 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 6 (0%)',
             'Python-Django: 35 (3%)',
         ]
+        print(result.output)
         for msg in expected:
             self.assertTrue(msg in result.output)
 
