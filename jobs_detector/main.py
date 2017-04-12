@@ -27,27 +27,23 @@ def hacker_news(post_id, keywords, combinations):
     """
     # HINT: You will probably want to use the `BeautifulSoup` tool to
     # parse the HTML content of the website
-    
     if keywords:
         keywords_list = keywords.split(',')
     else:
         keywords_list = DEFAULT_KEYWORDS
-    # combinations = combinations.split(',')
-    
-    # combinations_list = [list(tuple(c.split('-'))) for c in combinations]
     
     url = 'https://news.ycombinator.com/item?id={}'.format(post_id)
     r = requests.get(url)
     if r.status_code == requests.codes.ok:
         data = BeautifulSoup(r.text, 'html.parser')
-        posts = data.find_all('tr', class_='athing')
+        posts = data.find_all(class_='athing') #('tr',
         # job_postings = [post.text for post in posts if post.find("img", width="0") if post.find("span", class_ = "c00")]
         job_postings = []
         for post in posts:
             if post.find("img", width="0"):
-                if post.find("span", class_ = "c00"):
+                if post.find("span", class_="c00"):
                     job_postings.append(post.text)
-    
+        
     total_no_job_posts = len(job_postings)
     
     print("Total job posts: {}".format(total_no_job_posts))
@@ -55,13 +51,18 @@ def hacker_news(post_id, keywords, combinations):
     keyword_results = get_postings_matching_keywords(job_postings, keywords_list)
     
     print ("Keywords:")
+    print ("\n")
     for k,v in keyword_results.items():
-        print("{}: {} ({}%)".format(k, v, get_percentage(v, total_no_job_posts)))
+        print("{}: {} ({}%)".format(k.title(), v, get_percentage(v, total_no_job_posts)))
 
     
-    # if combinations:
-    #     # combinations_results = get_postings_matching_combinations(job_postings, combinations)
-    #     pass
+    if combinations:
+        combo_list = [combo.split('-') for combo in combinations]
+        combinations_results = get_postings_matching_combinations(job_postings, combo_list)
+        print("\n")
+        print("Combinations:")
+        for k,v in combinations_results.items():
+            print("{}: {} ({}%)".format(k, v, get_percentage(v, total_no_job_posts)))
 
 
 def get_percentage(value, total):
@@ -69,7 +70,7 @@ def get_percentage(value, total):
     
     
 def get_postings_matching_keywords(postings, keywords):
-    results = {key: sum([1 for post in postings if key in post])
+    results = {key: sum([1 for post in postings if key.lower() in post])
     for key in keywords}
     
     return results
@@ -87,7 +88,7 @@ def get_postings_matching_combinations(postings, combinations):
     
     results = {}
     for combo in combinations:
-        results['-'.join(combo)] = 0
+        results['-'.join(combo).title()] = 0
     
     for post in postings:
         for combo in combinations:
@@ -95,7 +96,7 @@ def get_postings_matching_combinations(postings, combinations):
             #   add post to count
             #["remote", "python"]                    
             if all([True if kw in post else False for kw in combo]): # [kw1, kw2, kw5] [True if x > 10 else False for x in y]
-                results['-'.join(combo)] += 1
+                results['-'.join(combo).title()] += 1
     
     return results
 
