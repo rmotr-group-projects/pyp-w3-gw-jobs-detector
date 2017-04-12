@@ -52,7 +52,7 @@ def hacker_news(post_id, keywords, combinations):
                     kwd_dict[kwd] += 1
         for kwd in keyword_list:
             output.append('{}: {} ({}%)'.format(
-                kwd, kwd_dict[kwd], (kwd_dict[kwd]*100)/total_jobs))
+                kwd, kwd_dict[kwd], int((kwd_dict[kwd]*100)/total_jobs)))
 
             
     if combinations:
@@ -69,7 +69,7 @@ def hacker_news(post_id, keywords, combinations):
                     combo_dict[combo_name] += 1
         for pair in combo_dict:
             output.append('{}: {} ({}%)'.format(
-                pair, combo_dict[pair], (combo_dict[pair]*100)/total_jobs))
+                pair, combo_dict[pair], int((combo_dict[pair]*100)/total_jobs)))
         
     for item in output:
         print(item)
