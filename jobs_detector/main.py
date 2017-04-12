@@ -23,7 +23,7 @@ def jobs_detector():
 @click.option('-i', '--post-id', type=str, required=True)
 @click.option('-k', '--keywords', type=str, default=','.join(DEFAULT_KEYWORDS))
 @click.option('-c', '--combinations', type=str,
-              callback=lambda _, x: x.split(',') if x else x)
+              callback=lambda _, __, x: x.split(',') if x else x)
 def hacker_news(post_id, keywords, combinations):
     keywords_list = keywords.split(',')
     postings = get_postings(post_id, keywords_list)
@@ -54,11 +54,11 @@ def get_postings(post_id, keywords_list):
 
 
 def _check_combination(posting, combination):
-    return all([c in posting for c in combination])
+    return all([c.lower() in posting.lower() for c in combination])
 
 
 def search_for_keywords(postings, keywords):
-    search_results = {key: sum([1 for post in postings if key in post])
+    search_results = {key: sum([1 for post in postings if key.lower() in post.lower()])
                       for key in keywords}
     return search_results
 
