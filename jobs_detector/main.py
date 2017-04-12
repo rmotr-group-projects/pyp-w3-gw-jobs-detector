@@ -42,8 +42,8 @@ def hacker_news(post_id, keywords, combinations):
         soup = BeautifulSoup(r.content, 'html.parser')
         data = soup.find_all('span', 'c00')
         total_jobs = len(data)
-        output.append('Total job posts: {}'.format(total_jobs))
-        output.append('Keywords:')
+        output.append('Total job posts: {}\n'.format(total_jobs))
+        output.append('Keywords:\n')
         for kwd in keyword_list:
             for item in data:
                 if kwd.lower() in item.prettify().lower():
@@ -58,7 +58,7 @@ def hacker_news(post_id, keywords, combinations):
     if combinations:
         combo_dict = {}
         combo_list = [combo.split('-') for combo in combinations]
-        output.append("Combinations:")
+        output.append("Combinations:\n")
         for pair in combo_list:
             combo_name = '-'.join(pair).title()
             for item in data:
@@ -68,8 +68,8 @@ def hacker_news(post_id, keywords, combinations):
                         combo_dict[combo_name] = 0
                     combo_dict[combo_name] += 1
         for pair in combo_dict:
-            output.append('{}: {} ({}%)'.format
-            (pair, combo_dict[pair], (combo_dict[pair]*100)/total_jobs))
+            output.append('{}: {} ({}%)'.format(
+                pair, combo_dict[pair], (combo_dict[pair]*100)/total_jobs))
         
     for item in output:
         print(item)
