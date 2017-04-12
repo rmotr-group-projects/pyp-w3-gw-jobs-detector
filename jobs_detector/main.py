@@ -46,7 +46,7 @@ def hacker_news(post_id, keywords, combinations):
         output.append('Keywords:\n')
         for kwd in keyword_list:
             for item in data:
-                if kwd.lower() in item.prettify().lower():
+                if kwd.lower() in item.prettify():
                     if kwd not in kwd_dict:
                         kwd_dict[kwd] = 0
                     kwd_dict[kwd] += 1
@@ -62,8 +62,8 @@ def hacker_news(post_id, keywords, combinations):
         for pair in combo_list:
             combo_name = '-'.join(pair).title()
             for item in data:
-                if (pair[0] in item.prettify().lower() 
-                    and pair[1] in item.prettify().lower()):
+                if (pair[0] in item.prettify() 
+                    and pair[1] in item.prettify()):
                     if combo_name not in combo_dict:
                         combo_dict[combo_name] = 0
                     combo_dict[combo_name] += 1
