@@ -2,6 +2,7 @@
 import re
 import os
 import unittest
+import traceback
 
 import responses
 from click.testing import CliRunner
@@ -41,6 +42,11 @@ class HackerNewsTestCase(unittest.TestCase):
             'React: 133 (15%)',
             'Pandas: 5 (0%)',
         ]
+        if result.exc_info:
+            print(result.output)
+            print(result.exc_info)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -60,7 +66,13 @@ class HackerNewsTestCase(unittest.TestCase):
             'Python: 143 (16%)',
             'Django: 36 (4%)',
         ]
+        if result.exc_info:
+            print(result.output)
+            print(result.exc_info)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
+            #added print line
             self.assertTrue(msg in result.output)
 
     @responses.activate
@@ -88,6 +100,11 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 6 (0%)',
             'Python-Django: 35 (3%)',
         ]
+        if result.exc_info:
+            print(result.output)
+            print(result.exc_info)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
             self.assertTrue(msg in result.output)
 
@@ -113,5 +130,10 @@ class HackerNewsTestCase(unittest.TestCase):
             'Django-Remote: 6 (0%)',
             'Python-Django: 35 (3%)',
         ]
+        if result.exc_info:
+            print(result.output)
+            print(result.exc_info)
+            traceback.print_tb(result.exc_info[2])
+
         for msg in expected:
             self.assertTrue(msg in result.output)
