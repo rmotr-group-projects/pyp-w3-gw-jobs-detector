@@ -26,19 +26,17 @@ def hacker_news(post_id, keywords, combinations):
     HackerNews posts based on given set of keywords.
     """
     keywords = keywords.split(',')
-    
-    n_job_posts = 0
-    k_jobs_dict = {}
-    c_jobs_dict = {}
     #_parser(post_id, keywords, combinations)
     #_results(keywords, combinations)
 
 
-    
+    n_job_posts = 0
+    k_jobs_dict = {}
+    c_jobs_dict = {}
 
 
 
-#def _parser(post_id, keywords, combinations):
+#def _parser(post_id, keywords=DEFAULT_KEYWORDS, combinations=None):
     
    
     res = requests.get(settings.BASE_URL.format(post_id))
@@ -56,25 +54,25 @@ def hacker_news(post_id, keywords, combinations):
             
     
     if combinations:
-        combinations = {combo.title(): 0 for combo in combinations}
+        c_jobs_dict = {combo.title(): 0 for combo in combinations}
         for post in job_posts:
-            for combo in combinations:
-                combokey = combo.split('-')
-                if all([x.lower() in post for x in combokey]):
-                    combinations[combo] +=1 #test throws an error on this line
-
+            for combo in c_jobs_dict:
+                
+                keycombo = combo.split('-')
+                if all([x.lower() in post for x in keycombo]):
+                    c_jobs_dict[combo] +=1 
 
     
-#def _results(keywords,combinations): 
-    template = "Total job posts: {}, \n\n".format(n_job_posts), "Keywords:\n"
+#def _results(keywords=DEFAULT_KEYWORDS,combinations=None): 
+    template = "Total job posts: {}, \n\nKeywords:\n".format(n_job_posts)
     print(template)    
     for k, v in k_jobs_dict.items():
-        print("{}: {} ({}%),\n".format(k, v, 100*v/n_job_posts))
+        print("{}: {} ({}%),\n".format(k, v, 100*v//n_job_posts))
         
     if combinations is not None:
         print("\nCombinations:\n")
-        for k, v in combinations.items():
-            print("{}: {} ({}%),\n".format(k, v, 100*v/n_job_posts))
+        for k, v in c_jobs_dict.items():
+            print("{}: {} ({}%),\n".format(k, v, 100*v//n_job_posts))
 
 
 if __name__ == '__main__':
