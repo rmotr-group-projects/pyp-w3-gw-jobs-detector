@@ -121,9 +121,10 @@ def print_list(job_list, key_list):
     
     print('Total job posts: {}'.format(len(job_list)))
     print('Keywords:')
-    for key, value in key_list.iteritems():
-        percentage = int((float(value) / len(job_list)) * 100)
-        print(DEFAULT_FORMAT.format(key.capitalize(), value, percentage))
+    for keyword in key_list.keys():
+        num_found = key_list[keyword]
+        percentage = int((float(num_found) / len(job_list)) * 100)
+        print(DEFAULT_FORMAT.format(keyword.capitalize(), num_found, percentage))
         
 
 def print_combo_list(job_list, combo_list):
